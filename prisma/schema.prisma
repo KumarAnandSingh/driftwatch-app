@@ -1,0 +1,129 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String      @id @default(cuid())
+  email         String      @unique
+  name          String?
+  emailVerified DateTime?
+  image         String?
+  createdAt     DateTime    @default(now())
+  orgMembers    OrgMember[]
+  accounts      Account[]
+  sessions      Session[]
+}
+
+model Org {
+  id        String      @id @default(cuid())
+  name      String
+  createdAt DateTime    @default(now())
+  members   OrgMember[]
+  projects  Project[]
+}
+
+model OrgMember {
+  id     String @id @default(cuid())
+  org    Org    @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  orgId  String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+  role   String
+
+  @@unique([orgId, userId])
+}
+
+model Project {
+  id        String     @id @default(cuid())
+  org       Org        @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  orgId     String
+  name      String
+  domains   Json
+  verified  Boolean    @default(false)
+  createdAt DateTime   @default(now())
+  runs      Run[]
+  baselines Baseline[]
+  apiKeys   ApiKey[]
+}
+
+model Run {
+  id          String     @id @default(cuid())
+  project     Project    @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  projectId   String
+  status      String
+  startedAt   DateTime   @default(now())
+  finishedAt  DateTime?
+  configJson  Json
+  summaryJson Json?
+  artifacts   Artifact[]
+}
+
+model Artifact {
+  id    String @id @default(cuid())
+  run   Run    @relation(fields: [runId], references: [id], onDelete: Cascade)
+  runId String
+  type  String
+  url   String
+  size  Int
+}
+
+model Baseline {
+  id        String   @id @default(cuid())
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  projectId String
+  path      String
+  imageUrl  String
+  updatedAt DateTime @default(now()) @updatedAt
+
+  @@unique([projectId, path])
+}
+
+model ApiKey {
+  id         String    @id @default(cuid())
+  project    Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  projectId  String
+  name       String
+  hash       String
+  scopes     String
+  lastUsedAt DateTime?
+  createdAt  DateTime  @default(now())
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
