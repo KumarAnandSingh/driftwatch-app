@@ -18,15 +18,22 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'User not found' }, { status: 404 });
     }
 
+    // Get user's organizations
+    const orgMembers = await prisma.orgMember.findMany({
+      where: { userId: user.id },
+      select: { orgId: true },
+    });
+    const orgIds = orgMembers.map((om) => om.orgId);
+
     // Get total projects count
     const totalProjects = await prisma.project.count({
-      where: { userId: user.id },
+      where: { orgId: { in: orgIds } },
     });
 
     // Get active scans count (IN_PROGRESS)
     const activeScans = await prisma.run.count({
       where: {
-        project: { userId: user.id },
+        project: { orgId: { in: orgIds } },
         status: 'IN_PROGRESS',
       },
     });
@@ -37,7 +44,7 @@ export async function GET(request: NextRequest) {
 
     const recentAlerts = await prisma.run.count({
       where: {
-        project: { userId: user.id },
+        project: { orgId: { in: orgIds } },
         status: 'COMPLETED',
         score: { lt: 70 },
         finishedAt: { gte: sevenDaysAgo },
@@ -47,7 +54,7 @@ export async function GET(request: NextRequest) {
     // Calculate average score from last 10 completed scans
     const recentCompletedRuns = await prisma.run.findMany({
       where: {
-        project: { userId: user.id },
+        project: { orgId: { in: orgIds } },
         status: 'COMPLETED',
         score: { not: null },
       },

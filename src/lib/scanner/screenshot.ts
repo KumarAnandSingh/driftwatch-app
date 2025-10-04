@@ -39,7 +39,7 @@ export class ScreenshotService {
       fullPage = true,
       width = 1920,
       height = 1080,
-      timeout = 30000,
+      timeout = 60000,
       quality = 90
     } = options;
 
@@ -52,14 +52,32 @@ export class ScreenshotService {
     });
 
     try {
-      // Navigate to page
-      await page.goto(url, {
-        waitUntil: 'networkidle',
-        timeout
-      });
+      // Navigate to page with retry logic
+      let navigationSuccess = false;
+      let lastError: Error | null = null;
+
+      const strategies = [
+        { waitUntil: 'domcontentloaded' as const, timeout },
+        { waitUntil: 'load' as const, timeout },
+      ];
+
+      for (const strategy of strategies) {
+        try {
+          await page.goto(url, strategy);
+          navigationSuccess = true;
+          break;
+        } catch (error) {
+          lastError = error as Error;
+          console.log(`Screenshot navigation failed with ${strategy.waitUntil}, trying next strategy...`);
+        }
+      }
+
+      if (!navigationSuccess) {
+        throw lastError || new Error('All screenshot navigation strategies failed');
+      }
 
       // Wait for any animations to complete
-      await page.waitForTimeout(1000);
+      await page.waitForTimeout(2000);
 
       // Take screenshot
       const screenshotBuffer = await page.screenshot({

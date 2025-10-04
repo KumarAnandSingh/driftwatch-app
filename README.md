@@ -79,11 +79,25 @@
    ```
 
 5. **Start the development server**
+
+   **IMPORTANT**: DriftWatch requires TWO processes to run:
+
    ```bash
+   # Terminal 1: Start Next.js server
    npm run dev
+
+   # Terminal 2: Start background worker
+   npm run worker:dev
+   ```
+
+   Or use the convenience script:
+   ```bash
+   ./start-dev.sh
    ```
 
    Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+   > ⚠️ **Note**: Scans will not start without the worker process running! See [DEVELOPMENT_SETUP.md](DEVELOPMENT_SETUP.md) for detailed architecture information.
 
 ## 📦 Project Structure
 
@@ -272,8 +286,8 @@ npm run test:e2e     # Run E2E tests
 - [ ] `GOOGLE_CLIENT_SECRET` - Google OAuth (optional)
 - [ ] `RESEND_API_KEY` - Email service API key
 - [ ] `EMAIL_FROM` - Sender email address
-- [ ] `REDIS_HOST` - Redis host
-- [ ] `REDIS_PORT` - Redis port
+- [ ] `REDIS_URL` - Redis connection URL
+- [ ] `ANTHROPIC_API_KEY` - Anthropic API key for AI critique
 
 ### Database Setup (Production)
 

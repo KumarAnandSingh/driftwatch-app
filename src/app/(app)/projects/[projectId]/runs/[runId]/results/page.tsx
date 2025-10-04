@@ -230,11 +230,25 @@ export default function ResultsPage() {
           </div>
 
           <div className="flex gap-2">
-            <Button variant="outline" size="sm">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => {
+                const url = window.location.href;
+                navigator.clipboard.writeText(url);
+                alert('Link copied to clipboard!');
+              }}
+            >
               <Share2 className="h-4 w-4 mr-2" />
               Share
             </Button>
-            <Button variant="outline" size="sm">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => {
+                window.print();
+              }}
+            >
               <Download className="h-4 w-4 mr-2" />
               Export PDF
             </Button>
@@ -612,14 +626,14 @@ export default function ResultsPage() {
                 )}
 
                 {/* Issues */}
-                {pageResult.issues.length > 0 && (
+                {(pageResult.issues || []).length > 0 && (
                   <div>
                     <h4 className="font-semibold mb-2 flex items-center gap-2">
                       <AlertTriangle className="h-4 w-4 text-yellow-600" />
                       Design Issues
                     </h4>
                     <div className="space-y-3">
-                      {pageResult.issues.map((issue, iIdx) => (
+                      {(pageResult.issues || []).map((issue, iIdx) => (
                         <div key={iIdx} className="border rounded-lg p-3">
                           <div className="flex items-start gap-2 mb-2">
                             {getSeverityBadge(issue.severity)}
@@ -652,7 +666,7 @@ export default function ResultsPage() {
                 <CardContent className="p-4">
                   <div className="aspect-video bg-muted rounded-lg mb-2 flex items-center justify-center overflow-hidden">
                     <img
-                      src={`/api/screenshots/${screenshot.path}`}
+                      src={`/artifacts/${screenshot.path}`}
                       alt={screenshot.url}
                       className="w-full h-full object-cover"
                     />
@@ -726,7 +740,7 @@ export default function ResultsPage() {
               </div>
               <div className="p-4 max-h-[80vh] overflow-auto">
                 <img
-                  src={`/api/screenshots/${run.screenshotResults[selectedScreenshot].path}`}
+                  src={`/artifacts/${run.screenshotResults[selectedScreenshot].path}`}
                   alt={run.screenshotResults[selectedScreenshot].url}
                   className="w-full"
                 />

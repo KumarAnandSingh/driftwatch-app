@@ -34,7 +34,7 @@ export class WebCrawler {
       seedUrl,
       maxDepth = 2,
       maxPages = 50,
-      timeout = 30000,
+      timeout = 60000,
       userAgent = 'DriftWatch/1.0'
     } = options;
 
@@ -77,11 +77,33 @@ export class WebCrawler {
     });
 
     try {
-      // Navigate to page with timeout
-      await page.goto(url, {
-        waitUntil: 'networkidle',
-        timeout
-      });
+      // Navigate to page with timeout and retry logic
+      // Try networkidle first, fallback to domcontentloaded for complex sites
+      let navigationSuccess = false;
+      let lastError: Error | null = null;
+
+      const strategies = [
+        { waitUntil: 'domcontentloaded' as const, timeout },
+        { waitUntil: 'load' as const, timeout },
+      ];
+
+      for (const strategy of strategies) {
+        try {
+          await page.goto(url, strategy);
+          navigationSuccess = true;
+          break;
+        } catch (error) {
+          lastError = error as Error;
+          console.log(`Navigation failed with ${strategy.waitUntil}, trying next strategy...`);
+        }
+      }
+
+      if (!navigationSuccess) {
+        throw lastError || new Error('All navigation strategies failed');
+      }
+
+      // Wait a bit for dynamic content to load
+      await page.waitForTimeout(2000);
 
       // Get page title
       const title = await page.title();
@@ -90,7 +112,7 @@ export class WebCrawler {
       const links = await page.$$eval('a[href]', (anchors) =>
         anchors
           .map((a) => (a as HTMLAnchorElement).href)
-          .filter((href) => href && !href.startsWith('javascript:') && !href.startsWith('mailto:'))
+          .filter((href) => href && typeof href === 'string' && !href.startsWith('javascript:') && !href.startsWith('mailto:'))
       );
 
       // Filter links to same origin

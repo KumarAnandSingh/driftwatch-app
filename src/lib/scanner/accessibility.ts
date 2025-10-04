@@ -44,7 +44,7 @@ export class AccessibilityScanner {
     const {
       url,
       standard = 'wcag21aa',
-      timeout = 30000
+      timeout = 60000
     } = options;
 
     if (!this.browser) {
@@ -54,11 +54,32 @@ export class AccessibilityScanner {
     const page = await this.browser!.newPage();
 
     try {
-      // Navigate to page
-      await page.goto(url, {
-        waitUntil: 'networkidle',
-        timeout
-      });
+      // Navigate to page with retry logic
+      let navigationSuccess = false;
+      let lastError: Error | null = null;
+
+      const strategies = [
+        { waitUntil: 'domcontentloaded' as const, timeout },
+        { waitUntil: 'load' as const, timeout },
+      ];
+
+      for (const strategy of strategies) {
+        try {
+          await page.goto(url, strategy);
+          navigationSuccess = true;
+          break;
+        } catch (error) {
+          lastError = error as Error;
+          console.log(`Accessibility navigation failed with ${strategy.waitUntil}, trying next strategy...`);
+        }
+      }
+
+      if (!navigationSuccess) {
+        throw lastError || new Error('All accessibility navigation strategies failed');
+      }
+
+      // Wait for dynamic content
+      await page.waitForTimeout(2000);
 
       // Inject axe-core from CDN
       await page.addScriptTag({

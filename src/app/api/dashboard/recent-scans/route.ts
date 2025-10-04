@@ -18,10 +18,17 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'User not found' }, { status: 404 });
     }
 
+    // Get user's organizations
+    const orgMembers = await prisma.orgMember.findMany({
+      where: { userId: user.id },
+      select: { orgId: true },
+    });
+    const orgIds = orgMembers.map((om) => om.orgId);
+
     // Get recent scans (last 10) with project info
     const recentScans = await prisma.run.findMany({
       where: {
-        project: { userId: user.id },
+        project: { orgId: { in: orgIds } },
       },
       orderBy: { startedAt: 'desc' },
       take: 10,
