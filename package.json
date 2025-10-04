@@ -13,8 +13,8 @@
     "db:migrate": "prisma migrate dev",
     "db:seed": "tsx prisma/seed.ts",
     "db:studio": "prisma studio",
-    "worker": "tsx src/workers/run-worker.ts",
-    "worker:dev": "tsx watch src/workers/run-worker.ts"
+    "worker": "tsx src/workers/scan-worker.ts",
+    "worker:dev": "tsx watch src/workers/scan-worker.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.65.0",
