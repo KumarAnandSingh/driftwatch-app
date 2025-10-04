@@ -59,8 +59,9 @@ export function FixItForMeDialog({ open, onOpenChange, issues, isPremium = false
   const [fixes, setFixes] = useState<Fix[]>([]);
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState('all');
+  const [error, setError] = useState<string | null>(null);
 
-  // Simulate AI fix generation
+  // Real AI fix generation
   const generateFixes = async () => {
     if (!isPremium) {
       return; // Show paywall instead
@@ -68,46 +69,47 @@ export function FixItForMeDialog({ open, onOpenChange, issues, isPremium = false
 
     setIsGenerating(true);
     setGenerationProgress(0);
+    setError(null);
 
-    // Simulate progressive generation
-    for (let i = 0; i <= 100; i += 20) {
-      await new Promise((resolve) => setTimeout(resolve, 300));
-      setGenerationProgress(i);
+    try {
+      // Simulate progressive generation for UX
+      const progressInterval = setInterval(() => {
+        setGenerationProgress((prev) => Math.min(prev + 10, 90));
+      }, 500);
+
+      // Call the real API
+      const response = await fetch('/api/fixes/generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          issues: issues.map(issue => ({
+            id: issue.id,
+            title: issue.title,
+            category: issue.category,
+            severity: issue.severity,
+            description: issue.description,
+          })),
+          url: typeof window !== 'undefined' ? window.location.href : '',
+        }),
+      });
+
+      clearInterval(progressInterval);
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to generate fixes');
+      }
+
+      const data = await response.json();
+      setFixes(data.fixes);
+      setGenerationProgress(100);
+    } catch (err) {
+      console.error('Error generating fixes:', err);
+      setError(err instanceof Error ? err.message : 'Failed to generate fixes');
+      setGenerationProgress(0);
+    } finally {
+      setIsGenerating(false);
     }
-
-    // Generate mock fixes
-    const generatedFixes: Fix[] = issues.slice(0, 5).map((issue, idx) => ({
-      id: issue.id,
-      title: issue.title,
-      category: issue.category,
-      severity: issue.severity as 'high' | 'medium' | 'low',
-      description: issue.description,
-      originalCode: `<!-- Before: Issue with ${issue.title} -->
-<div class="container">
-  <img src="logo.png">
-  <div onclick="handleClick()">
-    Click me
-  </div>
-</div>`,
-      fixedCode: `<!-- After: Fixed ${issue.title} -->
-<div class="container">
-  <img src="logo.png" alt="Company Logo" aria-label="Company Logo">
-  <button
-    type="button"
-    onclick="handleClick()"
-    aria-label="Submit form"
-    class="btn btn-primary"
-  >
-    Click me
-  </button>
-</div>`,
-      explanation: `This fix addresses the ${issue.category} issue by adding proper ARIA labels, semantic HTML elements, and ensuring keyboard accessibility. The changes improve screen reader compatibility and follow WCAG 2.1 AA guidelines.`,
-      impact: 'High - Improves accessibility for screen reader users and keyboard navigation',
-    }));
-
-    setFixes(generatedFixes);
-    setIsGenerating(false);
-    setGenerationProgress(100);
   };
 
   const copyToClipboard = async (code: string, id: string) => {
@@ -255,7 +257,24 @@ export function FixItForMeDialog({ open, onOpenChange, issues, isPremium = false
             {fixes.length === 0 ? (
               // Generation UI
               <div className="text-center space-y-6 py-12">
-                {!isGenerating ? (
+                {error ? (
+                  <>
+                    <div className="h-20 w-20 rounded-full bg-red-100 dark:bg-red-950/20 flex items-center justify-center mx-auto">
+                      <XCircle className="h-10 w-10 text-red-600" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold mb-2 text-red-600">Generation Failed</h3>
+                      <p className="text-muted-foreground max-w-md mx-auto">
+                        {error}
+                      </p>
+                    </div>
+                    <Button size="lg" onClick={generateFixes} className="gap-2">
+                      <Sparkles className="h-5 w-5" />
+                      Try Again
+                      <ArrowRight className="h-4 w-4" />
+                    </Button>
+                  </>
+                ) : !isGenerating ? (
                   <>
                     <div className="h-20 w-20 rounded-full bg-primary/10 flex items-center justify-center mx-auto">
                       <Wand2 className="h-10 w-10 text-primary" />
