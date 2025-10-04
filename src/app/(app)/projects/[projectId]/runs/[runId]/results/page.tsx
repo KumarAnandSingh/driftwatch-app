@@ -344,7 +344,7 @@ export default function ResultsPage() {
             }))
           ) || []),
           ...(run?.aiCritiqueResults?.flatMap((pageResult) =>
-            pageResult.issues.map((issue, idx) => ({
+            (pageResult.issues || []).map((issue, idx) => ({
               id: `ai-${pageResult.url}-${idx}`,
               title: issue.category,
               category: 'Design',
