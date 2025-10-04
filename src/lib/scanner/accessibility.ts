@@ -1,5 +1,4 @@
 import { chromium, Browser } from 'playwright';
-import { injectAxe, checkA11y, getViolations } from '@axe-core/playwright';
 
 export interface AccessibilityOptions {
   url: string;
@@ -61,8 +60,10 @@ export class AccessibilityScanner {
         timeout
       });
 
-      // Inject axe-core
-      await injectAxe(page);
+      // Inject axe-core from CDN
+      await page.addScriptTag({
+        url: 'https://cdnjs.cloudflare.com/ajax/libs/axe-core/4.10.0/axe.min.js'
+      });
 
       // Run accessibility scan
       const results = await page.evaluate(async (ruleTags) => {

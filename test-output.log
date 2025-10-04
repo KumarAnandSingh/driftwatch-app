@@ -1,0 +1,34 @@
+🚀 DriftWatch Scanner - Testing studyify.in
+
+📡 Phase 1: Crawling website...
+✅ Found 1 page(s)
+   - https://www.studyify.in/dashboard
+
+📸 Phase 2: Capturing screenshot...
+✅ Captured 1 screenshot(s)
+   - /Users/priyasingh/driftwatch-app/public/artifacts/screenshot_https___www_studyify_in_dashboard_1759548198574.png (31KB)
+
+♿ Phase 3: Running accessibility scan...
+✅ Accessibility Score: 100/100
+   - Violations: 0
+   - Passes: 0
+
+⚡ Phase 4: Performance analysis...
+   ⏭️  Skipping (Lighthouse takes ~30s per page)
+   💡 To enable: remove the skip in the script
+
+🤖 Phase 5: AI Design Critique...
+   ⏭️  Skipping (ANTHROPIC_API_KEY not set)
+   💡 To enable: export ANTHROPIC_API_KEY=sk-ant-...
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📊 SCAN SUMMARY
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+✅ Pages Scanned: 1
+✅ Screenshots Captured: 1
+✅ Accessibility Score: 100/100
+✅ Total Violations: 0
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🎉 DriftWatch scan completed successfully!
+📁 Screenshots saved to: /Users/priyasingh/driftwatch-app/public/artifacts
