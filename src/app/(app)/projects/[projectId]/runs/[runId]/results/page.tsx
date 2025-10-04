@@ -29,6 +29,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { FixItForMeDialog } from '@/components/premium/FixItForMeDialog';
 
 interface Run {
   id: string;
@@ -99,6 +100,8 @@ export default function ResultsPage() {
   const [celebrationShown, setCelebrationShown] = useState(false);
   const [expandedIssues, setExpandedIssues] = useState<Set<string>>(new Set());
   const [selectedScreenshot, setSelectedScreenshot] = useState<number | null>(null);
+  const [fixDialogOpen, setFixDialogOpen] = useState(false);
+  const [isPremium] = useState(false); // TODO: Get from user subscription status
 
   useEffect(() => {
     fetchResults();
@@ -316,7 +319,7 @@ export default function ResultsPage() {
                     </p>
                   </div>
                 </div>
-                <Button size="lg" className="gap-2">
+                <Button size="lg" className="gap-2" onClick={() => setFixDialogOpen(true)}>
                   <Sparkles className="h-5 w-5" />
                   Fix It For Me
                 </Button>
@@ -325,6 +328,33 @@ export default function ResultsPage() {
           </Card>
         </motion.div>
       )}
+
+      {/* Fix It For Me Dialog */}
+      <FixItForMeDialog
+        open={fixDialogOpen}
+        onOpenChange={setFixDialogOpen}
+        issues={[
+          ...(run?.a11yResults?.flatMap((pageResult) =>
+            pageResult.violations.map((v, idx) => ({
+              id: `a11y-${pageResult.url}-${idx}`,
+              title: v.help,
+              category: 'Accessibility',
+              severity: v.impact === 'critical' ? 'high' : v.impact === 'serious' ? 'medium' : 'low',
+              description: v.description,
+            }))
+          ) || []),
+          ...(run?.aiCritiqueResults?.flatMap((pageResult) =>
+            pageResult.issues.map((issue, idx) => ({
+              id: `ai-${pageResult.url}-${idx}`,
+              title: issue.category,
+              category: 'Design',
+              severity: issue.severity,
+              description: issue.description,
+            }))
+          ) || []),
+        ]}
+        isPremium={isPremium}
+      />
 
       {/* Detailed Results Tabs */}
       <Tabs defaultValue="overview" className="space-y-6">
