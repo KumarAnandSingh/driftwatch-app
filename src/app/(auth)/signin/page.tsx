@@ -27,8 +27,8 @@ export default function SignIn() {
       if (result?.error) {
         setError('Failed to send verification code. Please try again.');
       } else {
-        // Redirect to verify page
-        window.location.href = '/verify';
+        // Redirect to verify page with email parameter
+        window.location.href = `/verify?email=${encodeURIComponent(email)}`;
       }
     } catch (err) {
       setError('An unexpected error occurred. Please try again.');
