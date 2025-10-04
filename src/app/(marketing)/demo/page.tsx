@@ -1,342 +1,282 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
-import { Button } from '@/components/Button';
-import { Container } from '@/components/Container';
-import { Card } from '@/components/Card';
+import { useState, useEffect } from 'react';
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Progress } from '@/components/ui/progress';
+import { Play, Pause, RotateCcw, CheckCircle2, Zap, Shield, Code } from 'lucide-react';
 
-interface CategoryStatus {
-  name: string;
-  icon: string;
-  status: 'pending' | 'running' | 'complete';
-  progress: number;
-  color: string;
-}
-
-export default function DemoPlayback() {
+export default function Demo() {
+  const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(true);
-  const [categories, setCategories] = useState<CategoryStatus[]>([
-    { name: 'Flow Tests', icon: '🔄', status: 'pending', progress: 0, color: 'indigo' },
-    { name: 'Accessibility', icon: '♿', status: 'pending', progress: 0, color: 'purple' },
-    { name: 'Performance', icon: '⚡', status: 'pending', progress: 0, color: 'pink' },
-    { name: 'Visual Regression', icon: '🖼️', status: 'pending', progress: 0, color: 'blue' },
-    { name: 'AI Design Critique', icon: '🤖', status: 'pending', progress: 0, color: 'amber' },
-  ]);
 
   useEffect(() => {
-    if (!isPlaying) return;
-
-    const id = setInterval(() => {
-      setProgress((p) => {
-        if (p >= 100) {
-          setIsPlaying(false);
-          return 100;
-        }
-        return p + 1;
-      });
-    }, 120);
-
-    return () => clearInterval(id);
+    if (isPlaying) {
+      const interval = setInterval(() => {
+        setProgress((prev) => {
+          if (prev >= 100) {
+            setIsPlaying(false);
+            return 100;
+          }
+          return prev + 1;
+        });
+      }, 100);
+      return () => clearInterval(interval);
+    }
   }, [isPlaying]);
 
-  useEffect(() => {
-    setCategories((cats) =>
-      cats.map((cat, index) => {
-        const startProgress = index * 20;
-        const endProgress = startProgress + 20;
-
-        if (progress < startProgress) {
-          return { ...cat, status: 'pending', progress: 0 };
-        } else if (progress >= startProgress && progress < endProgress) {
-          const categoryProgress = ((progress - startProgress) / 20) * 100;
-          return { ...cat, status: 'running', progress: Math.min(categoryProgress, 100) };
-        } else {
-          return { ...cat, status: 'complete', progress: 100 };
-        }
-      })
-    );
-  }, [progress]);
-
-  const handlePlayPause = () => {
-    if (progress >= 100) {
-      setProgress(0);
-      setIsPlaying(true);
-    } else {
-      setIsPlaying(!isPlaying);
-    }
+  const handleRestart = () => {
+    setProgress(0);
+    setIsPlaying(true);
   };
 
-  const eta = Math.max(0, Math.ceil((100 - progress) * 0.12));
+  const categories = [
+    { name: 'Flows', status: progress > 20 ? 'complete' : 'pending', color: 'text-blue-600' },
+    { name: 'Accessibility', status: progress > 40 ? 'complete' : 'pending', color: 'text-green-600' },
+    { name: 'Performance', status: progress > 60 ? 'complete' : 'pending', color: 'text-amber-600' },
+    { name: 'Visual', status: progress > 80 ? 'complete' : 'pending', color: 'text-purple-600' },
+    { name: 'AI Critique', status: progress === 100 ? 'complete' : 'pending', color: 'text-pink-600' },
+  ];
 
   return (
     <>
       {/* Hero Section */}
-      <section className="py-20 bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50">
-        <Container>
+      <section className="py-20 bg-gradient-to-b from-primary/5 via-background to-background">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto">
-            <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-6">
-              Interactive{' '}
-              <span className="bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
-                Demo
+            <h1 className="text-4xl sm:text-5xl font-bold mb-6">
+              See DriftWatch in{' '}
+              <span className="bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">
+                action
               </span>
             </h1>
-            <p className="text-xl text-gray-600 mb-8">
-              Watch DriftWatch analyze a web application in real-time. This simulation shows all five testing dimensions in action.
+            <p className="text-xl text-muted-foreground mb-8">
+              Watch how DriftWatch scans a real website and generates a comprehensive quality report in seconds.
             </p>
           </div>
-        </Container>
+        </div>
       </section>
 
-      {/* Demo Playback Section */}
-      <section className="py-20 bg-white">
-        <Container>
-          <div className="max-w-4xl mx-auto">
-            {/* Progress Bar */}
-            <Card padding="lg" className="mb-8">
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-2xl font-bold text-gray-900">Test Run Progress</h2>
-                <div className="flex items-center gap-4">
-                  <div className="text-sm text-gray-600">
-                    ETA: <span className="font-semibold text-gray-900">{eta}s</span>
-                  </div>
-                  <button
-                    onClick={handlePlayPause}
-                    className="p-2 rounded-lg bg-gradient-to-r from-indigo-600 to-purple-600 text-white hover:from-indigo-700 hover:to-purple-700 transition-all shadow-md hover:shadow-lg"
-                    aria-label={isPlaying ? 'Pause' : progress >= 100 ? 'Restart' : 'Play'}
-                  >
-                    {progress >= 100 ? (
-                      <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clipRule="evenodd" />
-                      </svg>
-                    ) : isPlaying ? (
-                      <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM7 8a1 1 0 012 0v4a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v4a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd" />
-                      </svg>
-                    ) : (
-                      <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clipRule="evenodd" />
-                      </svg>
-                    )}
-                  </button>
-                </div>
-              </div>
-
-              <div className="h-4 bg-gray-200 rounded-full overflow-hidden">
-                <div
-                  className="h-full bg-gradient-to-r from-indigo-600 to-purple-600 transition-all duration-300 ease-linear"
-                  style={{ width: `${progress}%` }}
-                />
-              </div>
-
-              <div className="mt-2 text-right text-sm font-semibold text-gray-700">
-                {progress}% Complete
-              </div>
-            </Card>
-
-            {/* Category Status Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-              {categories.map((category) => (
-                <Card
-                  key={category.name}
-                  padding="md"
-                  className={`transition-all duration-300 ${
-                    category.status === 'running'
-                      ? 'border-2 border-indigo-500 shadow-lg'
-                      : category.status === 'complete'
-                      ? 'border-2 border-green-500'
-                      : 'opacity-60'
-                  }`}
-                >
-                  <div className="flex items-start justify-between mb-3">
-                    <div className="flex items-center gap-3">
-                      <div className="text-3xl">{category.icon}</div>
-                      <div>
-                        <h3 className="font-semibold text-gray-900">{category.name}</h3>
-                        <p className="text-xs text-gray-600 capitalize">{category.status}</p>
-                      </div>
-                    </div>
-                    {category.status === 'complete' && (
-                      <svg className="w-6 h-6 text-green-600" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                      </svg>
-                    )}
-                    {category.status === 'running' && (
-                      <div className="animate-spin rounded-full h-6 w-6 border-2 border-indigo-600 border-t-transparent" />
-                    )}
-                  </div>
-
-                  {category.status !== 'pending' && (
-                    <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
-                      <div
-                        className={`h-full transition-all duration-300 ${
-                          category.status === 'complete'
-                            ? 'bg-green-500'
-                            : `bg-${category.color}-500`
-                        }`}
-                        style={{ width: `${category.progress}%` }}
-                      />
-                    </div>
-                  )}
-                </Card>
-              ))}
-            </div>
-
-            {/* Call to Action Banner */}
-            <Card className="bg-gradient-to-br from-indigo-600 to-purple-600 text-white text-center" padding="lg">
-              <h2 className="text-2xl font-bold mb-3">
-                Want to run DriftWatch on your site?
-              </h2>
-              <p className="text-indigo-100 mb-6 max-w-2xl mx-auto">
-                Sign up for free and start testing your web application with all five dimensions. No credit card required.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button href="/signup" variant="primary" size="lg" className="bg-white text-indigo-600 hover:bg-gray-50">
-                  Sign Up Free
-                </Button>
-                <Button href="#sample-report" variant="secondary" size="lg">
-                  View Sample Report
-                </Button>
-              </div>
-            </Card>
-          </div>
-        </Container>
-      </section>
-
-      {/* Sample Report Section */}
-      <section id="sample-report" className="py-20 bg-gray-50">
-        <Container>
-          <div className="max-w-4xl mx-auto">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
-                Sample Report
-              </h2>
-              <p className="text-xl text-gray-600">
-                See what a complete DriftWatch report looks like
-              </p>
-            </div>
-
-            <Card padding="lg" className="text-center">
-              <div className="aspect-video bg-gradient-to-br from-gray-100 to-gray-200 rounded-lg flex items-center justify-center mb-6">
+      {/* Interactive Demo */}
+      <section className="py-12 bg-background">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-5xl">
+          <Card className="shadow-2xl border-border">
+            <CardHeader>
+              <div className="flex items-center justify-between">
                 <div>
-                  <div className="w-20 h-20 mx-auto mb-4 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-2xl flex items-center justify-center">
-                    <svg className="w-10 h-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                    </svg>
-                  </div>
-                  <p className="text-gray-600 font-medium text-lg">Interactive Report Preview</p>
-                  <p className="text-sm text-gray-500 mt-2">Unified HTML report with all test results</p>
+                  <CardTitle className="text-2xl">Live Demo - Testing example.com</CardTitle>
+                  <CardDescription className="mt-2">
+                    Running all 5 testing dimensions
+                  </CardDescription>
+                </div>
+                <div className="flex gap-2">
+                  <Button
+                    size="icon"
+                    variant="outline"
+                    onClick={() => setIsPlaying(!isPlaying)}
+                    disabled={progress === 100 && !isPlaying}
+                  >
+                    {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
+                  </Button>
+                  <Button size="icon" variant="outline" onClick={handleRestart}>
+                    <RotateCcw className="w-4 h-4" />
+                  </Button>
                 </div>
               </div>
+            </CardHeader>
 
-              <p className="text-gray-600 mb-6">
-                View a complete sample report showing all five testing dimensions, including detailed findings,
-                screenshots, metrics, and recommendations.
-              </p>
+            <CardContent className="space-y-6">
+              {/* Progress Bar */}
+              <div className="space-y-2">
+                <div className="flex justify-between text-sm">
+                  <span className="text-muted-foreground">Overall Progress</span>
+                  <span className="font-semibold">{progress}%</span>
+                </div>
+                <Progress value={progress} className="h-3" />
+              </div>
 
-              <Button href="/report-sample.html" variant="primary" size="lg">
-                Open Sample Report
-              </Button>
+              {/* Category Status */}
+              <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+                {categories.map((category, i) => (
+                  <Card key={i} className={`border-border ${category.status === 'complete' ? 'bg-accent/50' : ''}`}>
+                    <CardContent className="p-4 text-center">
+                      <div className={`mb-2 ${category.color}`}>
+                        {category.status === 'complete' ? (
+                          <CheckCircle2 className="w-6 h-6 mx-auto" />
+                        ) : (
+                          <div className="w-6 h-6 mx-auto border-2 border-current rounded-full opacity-30" />
+                        )}
+                      </div>
+                      <p className="text-sm font-medium">{category.name}</p>
+                      <Badge variant={category.status === 'complete' ? 'default' : 'secondary'} className="mt-2 text-xs">
+                        {category.status === 'complete' ? 'Done' : 'Pending'}
+                      </Badge>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
 
-              <div className="mt-8 pt-8 border-t border-gray-200">
-                <h3 className="font-semibold text-gray-900 mb-4">What's included in the report:</h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-left">
-                  <div className="flex items-start gap-2">
-                    <svg className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                    </svg>
-                    <span className="text-gray-700">Flow test results with screenshots</span>
-                  </div>
-                  <div className="flex items-start gap-2">
-                    <svg className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                    </svg>
-                    <span className="text-gray-700">Accessibility violations and fixes</span>
-                  </div>
-                  <div className="flex items-start gap-2">
-                    <svg className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                    </svg>
-                    <span className="text-gray-700">Performance metrics and scores</span>
-                  </div>
-                  <div className="flex items-start gap-2">
-                    <svg className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                    </svg>
-                    <span className="text-gray-700">Visual regression comparisons</span>
-                  </div>
-                  <div className="flex items-start gap-2">
-                    <svg className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                    </svg>
-                    <span className="text-gray-700">AI design recommendations</span>
-                  </div>
-                  <div className="flex items-start gap-2">
-                    <svg className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                    </svg>
-                    <span className="text-gray-700">Offline-ready HTML file</span>
+              {/* Results Preview */}
+              {progress === 100 && (
+                <div className="mt-6 p-6 bg-primary/5 rounded-lg border border-primary/20">
+                  <div className="flex items-start gap-4">
+                    <CheckCircle2 className="w-8 h-8 text-primary flex-shrink-0" />
+                    <div>
+                      <h3 className="text-lg font-semibold mb-2">Scan Complete!</h3>
+                      <p className="text-muted-foreground mb-4">
+                        All 5 testing dimensions completed successfully. Your comprehensive quality report is ready.
+                      </p>
+                      <Button size="sm" asChild>
+                        <Link href="/signup">Create Your Own Report</Link>
+                      </Button>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </Card>
-          </div>
-        </Container>
+              )}
+            </CardContent>
+          </Card>
+        </div>
       </section>
 
-      {/* Features Highlight */}
-      <section className="py-20 bg-white">
-        <Container>
+      {/* Sample Report Preview */}
+      <section className="py-20 bg-accent/50">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">
-              Why choose DriftWatch?
+            <h2 className="text-3xl sm:text-4xl font-bold mb-4">
+              Unified Quality Report
             </h2>
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+              All testing results in one comprehensive, easy-to-understand report
+            </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-            <Card padding="lg" className="text-center">
-              <div className="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center mx-auto mb-4">
-                <svg className="w-6 h-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">Fast & Efficient</h3>
-              <p className="text-gray-600">
-                All five testing dimensions run in parallel, delivering comprehensive results in minutes.
-              </p>
+          <div className="grid lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
+            <Card className="border-border">
+              <CardContent className="p-8">
+                <div className="aspect-video bg-gradient-to-br from-primary/10 to-purple-600/10 rounded-lg flex items-center justify-center mb-6">
+                  <Code className="w-16 h-16 text-primary" />
+                </div>
+                <h3 className="text-xl font-semibold mb-3">Detailed Test Results</h3>
+                <ul className="space-y-3 text-muted-foreground">
+                  <li className="flex items-start">
+                    <CheckCircle2 className="w-5 h-5 text-primary mr-2 flex-shrink-0 mt-0.5" />
+                    <span>Step-by-step flow execution with screenshots</span>
+                  </li>
+                  <li className="flex items-start">
+                    <CheckCircle2 className="w-5 h-5 text-primary mr-2 flex-shrink-0 mt-0.5" />
+                    <span>Accessibility violations with severity levels</span>
+                  </li>
+                  <li className="flex items-start">
+                    <CheckCircle2 className="w-5 h-5 text-primary mr-2 flex-shrink-0 mt-0.5" />
+                    <span>Performance metrics and Core Web Vitals</span>
+                  </li>
+                  <li className="flex items-start">
+                    <CheckCircle2 className="w-5 h-5 text-primary mr-2 flex-shrink-0 mt-0.5" />
+                    <span>Visual regression comparisons</span>
+                  </li>
+                  <li className="flex items-start">
+                    <CheckCircle2 className="w-5 h-5 text-primary mr-2 flex-shrink-0 mt-0.5" />
+                    <span>AI-powered design recommendations</span>
+                  </li>
+                </ul>
+              </CardContent>
             </Card>
 
-            <Card padding="lg" className="text-center">
-              <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mx-auto mb-4">
-                <svg className="w-6 h-6 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">Privacy First</h3>
-              <p className="text-gray-600">
-                All testing happens in your infrastructure. No data leaves your environment.
-              </p>
-            </Card>
-
-            <Card padding="lg" className="text-center">
-              <div className="w-12 h-12 bg-pink-100 rounded-lg flex items-center justify-center mx-auto mb-4">
-                <svg className="w-6 h-6 text-pink-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">Developer Friendly</h3>
-              <p className="text-gray-600">
-                Simple CLI, CI/CD integration, and comprehensive documentation to get started quickly.
-              </p>
+            <Card className="border-border">
+              <CardContent className="p-8">
+                <div className="aspect-video bg-gradient-to-br from-amber-500/10 to-orange-600/10 rounded-lg flex items-center justify-center mb-6">
+                  <Zap className="w-16 h-16 text-amber-600" />
+                </div>
+                <h3 className="text-xl font-semibold mb-3">Actionable Insights</h3>
+                <ul className="space-y-3 text-muted-foreground">
+                  <li className="flex items-start">
+                    <CheckCircle2 className="w-5 h-5 text-primary mr-2 flex-shrink-0 mt-0.5" />
+                    <span>Priority-ranked issues with impact analysis</span>
+                  </li>
+                  <li className="flex items-start">
+                    <CheckCircle2 className="w-5 h-5 text-primary mr-2 flex-shrink-0 mt-0.5" />
+                    <span>Remediation guidance for each finding</span>
+                  </li>
+                  <li className="flex items-start">
+                    <CheckCircle2 className="w-5 h-5 text-primary mr-2 flex-shrink-0 mt-0.5" />
+                    <span>Trend analysis across test runs</span>
+                  </li>
+                  <li className="flex items-start">
+                    <CheckCircle2 className="w-5 h-5 text-primary mr-2 flex-shrink-0 mt-0.5" />
+                    <span>Exportable HTML and JSON formats</span>
+                  </li>
+                  <li className="flex items-start">
+                    <CheckCircle2 className="w-5 h-5 text-primary mr-2 flex-shrink-0 mt-0.5" />
+                    <span>CI/CD integration ready</span>
+                  </li>
+                </ul>
+              </CardContent>
             </Card>
           </div>
+        </div>
+      </section>
 
-          <div className="mt-12 text-center">
-            <Button href="/features" variant="ghost" size="lg">
-              Explore All Features →
+      {/* Key Benefits */}
+      <section className="py-20 bg-background">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+            {[
+              {
+                icon: Shield,
+                title: 'Catch Issues Early',
+                description: 'Identify bugs, accessibility problems, and performance bottlenecks before they reach production.',
+                color: 'text-green-600',
+                bgColor: 'from-green-500/10 to-green-600/10',
+              },
+              {
+                icon: Zap,
+                title: 'Save Time',
+                description: 'Automated testing across all dimensions means faster releases with confidence.',
+                color: 'text-amber-600',
+                bgColor: 'from-amber-500/10 to-amber-600/10',
+              },
+              {
+                icon: Code,
+                title: 'Improve Quality',
+                description: 'Continuous monitoring ensures your web app maintains high quality standards.',
+                color: 'text-blue-600',
+                bgColor: 'from-blue-500/10 to-blue-600/10',
+              },
+            ].map((benefit, i) => (
+              <Card key={i} className="text-center border-border">
+                <CardContent className="p-8">
+                  <div className={`w-16 h-16 mx-auto mb-4 bg-gradient-to-br ${benefit.bgColor} rounded-full flex items-center justify-center`}>
+                    <benefit.icon className={`w-8 h-8 ${benefit.color}`} />
+                  </div>
+                  <h3 className="text-xl font-semibold mb-3">{benefit.title}</h3>
+                  <p className="text-muted-foreground">{benefit.description}</p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="py-20 bg-gradient-to-br from-primary to-purple-600">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-3xl sm:text-4xl font-bold mb-4 text-white">
+            Ready to try it yourself?
+          </h2>
+          <p className="text-xl text-primary-foreground/90 mb-8 max-w-2xl mx-auto">
+            Sign up now and run your first quality scan for free. No credit card required.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button size="lg" variant="secondary" asChild>
+              <Link href="/features">Explore Features</Link>
+            </Button>
+            <Button size="lg" variant="outline" className="bg-white text-primary hover:bg-white/90 border-white" asChild>
+              <Link href="/signup">Start Free Trial</Link>
             </Button>
           </div>
-        </Container>
+        </div>
       </section>
     </>
   );

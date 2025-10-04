@@ -1,9 +1,11 @@
 'use client';
 
 import { useState } from 'react';
-import { Button } from '@/components/Button';
-import { Container } from '@/components/Container';
-import { Card } from '@/components/Card';
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { CheckCircle2, ChevronDown } from 'lucide-react';
 
 export default function Pricing() {
   const [billingPeriod, setBillingPeriod] = useState<'monthly' | 'yearly'>('monthly');
@@ -23,7 +25,7 @@ export default function Pricing() {
       ],
       cta: 'Get Started Free',
       href: '/signup',
-      variant: 'secondary' as const,
+      variant: 'outline' as const,
       popular: false,
     },
     {
@@ -43,7 +45,7 @@ export default function Pricing() {
       ],
       cta: 'Start Pro Trial',
       href: '/signup?plan=pro',
-      variant: 'primary' as const,
+      variant: 'default' as const,
       popular: true,
       savings: 98,
     },
@@ -99,325 +101,313 @@ export default function Pricing() {
   return (
     <>
       {/* Hero Section */}
-      <section className="py-20 bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50">
-        <Container>
+      <section className="py-20 bg-gradient-to-b from-primary/5 via-background to-background">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto">
-            <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-6">
+            <h1 className="text-4xl sm:text-5xl font-bold mb-6">
               Simple, transparent{' '}
-              <span className="bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">
                 pricing
               </span>
             </h1>
-            <p className="text-xl text-gray-600 mb-8">
+            <p className="text-xl text-muted-foreground mb-8">
               Choose the plan that fits your needs. Start free, upgrade when you're ready.
             </p>
 
             {/* Billing Toggle */}
-            <div className="inline-flex items-center bg-white rounded-lg p-1 shadow-md">
+            <div className="inline-flex items-center bg-card rounded-lg p-1 border border-border shadow-sm">
               <button
                 onClick={() => setBillingPeriod('monthly')}
                 className={`px-6 py-2 rounded-md font-medium transition-all ${
                   billingPeriod === 'monthly'
-                    ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-md'
-                    : 'text-gray-700 hover:bg-gray-100'
+                    ? 'bg-primary text-primary-foreground shadow-sm'
+                    : 'text-muted-foreground hover:text-foreground'
                 }`}
               >
                 Monthly
               </button>
               <button
                 onClick={() => setBillingPeriod('yearly')}
-                className={`px-6 py-2 rounded-md font-medium transition-all ${
+                className={`px-6 py-2 rounded-md font-medium transition-all flex items-center gap-2 ${
                   billingPeriod === 'yearly'
-                    ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-md'
-                    : 'text-gray-700 hover:bg-gray-100'
+                    ? 'bg-primary text-primary-foreground shadow-sm'
+                    : 'text-muted-foreground hover:text-foreground'
                 }`}
               >
                 Yearly
-                <span className="ml-2 text-xs font-semibold px-2 py-0.5 rounded-full bg-green-100 text-green-700">
+                <Badge variant="secondary" className="text-xs">
                   Save $98
-                </span>
+                </Badge>
               </button>
             </div>
           </div>
-        </Container>
+        </div>
       </section>
 
       {/* Pricing Cards */}
-      <section className="py-20 bg-white">
-        <Container>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <section className="py-20 bg-background">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
             {pricingTiers.map((tier) => (
               <Card
                 key={tier.name}
                 className={`relative flex flex-col ${
-                  tier.popular ? 'border-2 border-indigo-600 shadow-xl' : ''
+                  tier.popular ? 'border-primary shadow-xl' : ''
                 }`}
-                padding="lg"
               >
                 {tier.popular && (
                   <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                    <span className="inline-flex items-center px-4 py-1 rounded-full text-sm font-semibold bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-md">
+                    <Badge className="shadow-md">
                       Most Popular
-                    </span>
+                    </Badge>
                   </div>
                 )}
 
-                <div className="text-center mb-6">
-                  <h3 className="text-2xl font-bold text-gray-900 mb-2">{tier.name}</h3>
-                  <p className="text-gray-600 mb-4">{tier.description}</p>
+                <CardHeader className="text-center">
+                  <CardTitle className="text-2xl">{tier.name}</CardTitle>
+                  <CardDescription>{tier.description}</CardDescription>
 
-                  <div className="mb-4">
+                  <div className="pt-4">
                     {tier.price[billingPeriod] === null ? (
-                      <div className="text-4xl font-bold text-gray-900">Custom</div>
+                      <div className="text-4xl font-bold">Custom</div>
                     ) : tier.price[billingPeriod] === 0 ? (
-                      <div className="text-4xl font-bold text-gray-900">Free</div>
+                      <div className="text-4xl font-bold">Free</div>
                     ) : (
                       <>
-                        <div className="text-5xl font-bold text-gray-900">
+                        <div className="text-5xl font-bold">
                           ${tier.price[billingPeriod]}
                         </div>
-                        <div className="text-gray-600 mt-1">
+                        <div className="text-muted-foreground mt-1">
                           per {billingPeriod === 'monthly' ? 'month' : 'year'}
                         </div>
                         {billingPeriod === 'yearly' && tier.savings && (
-                          <div className="text-sm text-green-600 font-semibold mt-2">
+                          <Badge variant="secondary" className="mt-2">
                             Save ${tier.savings}/year
-                          </div>
+                          </Badge>
                         )}
                       </>
                     )}
                   </div>
-                </div>
+                </CardHeader>
 
-                <ul className="space-y-3 mb-8 flex-grow">
-                  {tier.features.map((feature, index) => (
-                    <li key={index} className="flex items-start">
-                      <svg
-                        className="w-5 h-5 text-green-600 mr-3 flex-shrink-0 mt-0.5"
-                        fill="currentColor"
-                        viewBox="0 0 20 20"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                      <span className="text-gray-700">{feature}</span>
-                    </li>
-                  ))}
-                </ul>
+                <CardContent className="flex-grow">
+                  <ul className="space-y-3">
+                    {tier.features.map((feature, index) => (
+                      <li key={index} className="flex items-start">
+                        <CheckCircle2 className="w-5 h-5 text-primary mr-3 flex-shrink-0 mt-0.5" />
+                        <span className="text-muted-foreground">{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </CardContent>
 
-                <Button href={tier.href} variant={tier.variant} size="lg" className="w-full">
-                  {tier.cta}
-                </Button>
+                <CardFooter>
+                  <Button variant={tier.variant} size="lg" className="w-full" asChild>
+                    <Link href={tier.href}>
+                      {tier.cta}
+                    </Link>
+                  </Button>
+                </CardFooter>
               </Card>
             ))}
           </div>
 
           {/* Feature Comparison Table */}
-          <div className="mt-20">
-            <h2 className="text-3xl font-bold text-gray-900 text-center mb-12">
+          <div className="mt-20 max-w-6xl mx-auto">
+            <h2 className="text-3xl font-bold text-center mb-12">
               Detailed feature comparison
             </h2>
 
-            <div className="overflow-x-auto">
-              <table className="w-full border-collapse">
-                <thead>
-                  <tr className="border-b-2 border-gray-300">
-                    <th className="text-left py-4 px-4 font-semibold text-gray-900">Feature</th>
-                    <th className="text-center py-4 px-4 font-semibold text-gray-900">Free</th>
-                    <th className="text-center py-4 px-4 font-semibold text-gray-900">Pro</th>
-                    <th className="text-center py-4 px-4 font-semibold text-gray-900">Enterprise</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-200">
-                  <tr>
-                    <td className="py-4 px-4 text-gray-700">Projects</td>
-                    <td className="py-4 px-4 text-center text-gray-700">1</td>
-                    <td className="py-4 px-4 text-center text-gray-700">Unlimited</td>
-                    <td className="py-4 px-4 text-center text-gray-700">Unlimited</td>
-                  </tr>
-                  <tr>
-                    <td className="py-4 px-4 text-gray-700">Pages per month</td>
-                    <td className="py-4 px-4 text-center text-gray-700">200</td>
-                    <td className="py-4 px-4 text-center text-gray-700">10,000</td>
-                    <td className="py-4 px-4 text-center text-gray-700">Custom</td>
-                  </tr>
-                  <tr>
-                    <td className="py-4 px-4 text-gray-700">Flow Testing</td>
-                    <td className="py-4 px-4 text-center">
-                      <CheckIcon />
-                    </td>
-                    <td className="py-4 px-4 text-center">
-                      <CheckIcon />
-                    </td>
-                    <td className="py-4 px-4 text-center">
-                      <CheckIcon />
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="py-4 px-4 text-gray-700">Accessibility Testing</td>
-                    <td className="py-4 px-4 text-center">
-                      <CheckIcon />
-                    </td>
-                    <td className="py-4 px-4 text-center">
-                      <CheckIcon />
-                    </td>
-                    <td className="py-4 px-4 text-center">
-                      <CheckIcon />
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="py-4 px-4 text-gray-700">Performance Testing</td>
-                    <td className="py-4 px-4 text-center">
-                      <CheckIcon />
-                    </td>
-                    <td className="py-4 px-4 text-center">
-                      <CheckIcon />
-                    </td>
-                    <td className="py-4 px-4 text-center">
-                      <CheckIcon />
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="py-4 px-4 text-gray-700">Visual Regression</td>
-                    <td className="py-4 px-4 text-center">
-                      <CheckIcon />
-                    </td>
-                    <td className="py-4 px-4 text-center">
-                      <CheckIcon />
-                    </td>
-                    <td className="py-4 px-4 text-center">
-                      <CheckIcon />
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="py-4 px-4 text-gray-700">AI Design Critique</td>
-                    <td className="py-4 px-4 text-center">
-                      <CheckIcon />
-                    </td>
-                    <td className="py-4 px-4 text-center">
-                      <CheckIcon />
-                    </td>
-                    <td className="py-4 px-4 text-center">
-                      <CheckIcon />
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="py-4 px-4 text-gray-700">Webhook integrations</td>
-                    <td className="py-4 px-4 text-center text-gray-400">-</td>
-                    <td className="py-4 px-4 text-center">
-                      <CheckIcon />
-                    </td>
-                    <td className="py-4 px-4 text-center">
-                      <CheckIcon />
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="py-4 px-4 text-gray-700">Custom baselines</td>
-                    <td className="py-4 px-4 text-center text-gray-400">-</td>
-                    <td className="py-4 px-4 text-center">
-                      <CheckIcon />
-                    </td>
-                    <td className="py-4 px-4 text-center">
-                      <CheckIcon />
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="py-4 px-4 text-gray-700">Report history</td>
-                    <td className="py-4 px-4 text-center text-gray-700">7 days</td>
-                    <td className="py-4 px-4 text-center text-gray-700">90 days</td>
-                    <td className="py-4 px-4 text-center text-gray-700">Unlimited</td>
-                  </tr>
-                  <tr>
-                    <td className="py-4 px-4 text-gray-700">SSO / SAML</td>
-                    <td className="py-4 px-4 text-center text-gray-400">-</td>
-                    <td className="py-4 px-4 text-center text-gray-400">-</td>
-                    <td className="py-4 px-4 text-center">
-                      <CheckIcon />
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="py-4 px-4 text-gray-700">Private runners</td>
-                    <td className="py-4 px-4 text-center text-gray-400">-</td>
-                    <td className="py-4 px-4 text-center text-gray-400">-</td>
-                    <td className="py-4 px-4 text-center">
-                      <CheckIcon />
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="py-4 px-4 text-gray-700">SLA guarantees</td>
-                    <td className="py-4 px-4 text-center text-gray-400">-</td>
-                    <td className="py-4 px-4 text-center text-gray-400">-</td>
-                    <td className="py-4 px-4 text-center">
-                      <CheckIcon />
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="py-4 px-4 text-gray-700">Support</td>
-                    <td className="py-4 px-4 text-center text-gray-700">Community</td>
-                    <td className="py-4 px-4 text-center text-gray-700">Priority</td>
-                    <td className="py-4 px-4 text-center text-gray-700">Dedicated</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+            <Card>
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead>
+                    <tr className="border-b border-border">
+                      <th className="text-left py-4 px-6 font-semibold">Feature</th>
+                      <th className="text-center py-4 px-6 font-semibold">Free</th>
+                      <th className="text-center py-4 px-6 font-semibold">Pro</th>
+                      <th className="text-center py-4 px-6 font-semibold">Enterprise</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-border">
+                    <tr>
+                      <td className="py-4 px-6 text-muted-foreground">Projects</td>
+                      <td className="py-4 px-6 text-center">1</td>
+                      <td className="py-4 px-6 text-center">Unlimited</td>
+                      <td className="py-4 px-6 text-center">Unlimited</td>
+                    </tr>
+                    <tr>
+                      <td className="py-4 px-6 text-muted-foreground">Pages per month</td>
+                      <td className="py-4 px-6 text-center">200</td>
+                      <td className="py-4 px-6 text-center">10,000</td>
+                      <td className="py-4 px-6 text-center">Custom</td>
+                    </tr>
+                    <tr>
+                      <td className="py-4 px-6 text-muted-foreground">Flow Testing</td>
+                      <td className="py-4 px-6 text-center">
+                        <CheckCircle2 className="w-5 h-5 text-primary mx-auto" />
+                      </td>
+                      <td className="py-4 px-6 text-center">
+                        <CheckCircle2 className="w-5 h-5 text-primary mx-auto" />
+                      </td>
+                      <td className="py-4 px-6 text-center">
+                        <CheckCircle2 className="w-5 h-5 text-primary mx-auto" />
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className="py-4 px-6 text-muted-foreground">Accessibility Testing</td>
+                      <td className="py-4 px-6 text-center">
+                        <CheckCircle2 className="w-5 h-5 text-primary mx-auto" />
+                      </td>
+                      <td className="py-4 px-6 text-center">
+                        <CheckCircle2 className="w-5 h-5 text-primary mx-auto" />
+                      </td>
+                      <td className="py-4 px-6 text-center">
+                        <CheckCircle2 className="w-5 h-5 text-primary mx-auto" />
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className="py-4 px-6 text-muted-foreground">Performance Testing</td>
+                      <td className="py-4 px-6 text-center">
+                        <CheckCircle2 className="w-5 h-5 text-primary mx-auto" />
+                      </td>
+                      <td className="py-4 px-6 text-center">
+                        <CheckCircle2 className="w-5 h-5 text-primary mx-auto" />
+                      </td>
+                      <td className="py-4 px-6 text-center">
+                        <CheckCircle2 className="w-5 h-5 text-primary mx-auto" />
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className="py-4 px-6 text-muted-foreground">Visual Regression</td>
+                      <td className="py-4 px-6 text-center">
+                        <CheckCircle2 className="w-5 h-5 text-primary mx-auto" />
+                      </td>
+                      <td className="py-4 px-6 text-center">
+                        <CheckCircle2 className="w-5 h-5 text-primary mx-auto" />
+                      </td>
+                      <td className="py-4 px-6 text-center">
+                        <CheckCircle2 className="w-5 h-5 text-primary mx-auto" />
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className="py-4 px-6 text-muted-foreground">AI Design Critique</td>
+                      <td className="py-4 px-6 text-center">
+                        <CheckCircle2 className="w-5 h-5 text-primary mx-auto" />
+                      </td>
+                      <td className="py-4 px-6 text-center">
+                        <CheckCircle2 className="w-5 h-5 text-primary mx-auto" />
+                      </td>
+                      <td className="py-4 px-6 text-center">
+                        <CheckCircle2 className="w-5 h-5 text-primary mx-auto" />
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className="py-4 px-6 text-muted-foreground">Webhook integrations</td>
+                      <td className="py-4 px-6 text-center text-muted-foreground">-</td>
+                      <td className="py-4 px-6 text-center">
+                        <CheckCircle2 className="w-5 h-5 text-primary mx-auto" />
+                      </td>
+                      <td className="py-4 px-6 text-center">
+                        <CheckCircle2 className="w-5 h-5 text-primary mx-auto" />
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className="py-4 px-6 text-muted-foreground">Custom baselines</td>
+                      <td className="py-4 px-6 text-center text-muted-foreground">-</td>
+                      <td className="py-4 px-6 text-center">
+                        <CheckCircle2 className="w-5 h-5 text-primary mx-auto" />
+                      </td>
+                      <td className="py-4 px-6 text-center">
+                        <CheckCircle2 className="w-5 h-5 text-primary mx-auto" />
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className="py-4 px-6 text-muted-foreground">Report history</td>
+                      <td className="py-4 px-6 text-center">7 days</td>
+                      <td className="py-4 px-6 text-center">90 days</td>
+                      <td className="py-4 px-6 text-center">Unlimited</td>
+                    </tr>
+                    <tr>
+                      <td className="py-4 px-6 text-muted-foreground">SSO / SAML</td>
+                      <td className="py-4 px-6 text-center text-muted-foreground">-</td>
+                      <td className="py-4 px-6 text-center text-muted-foreground">-</td>
+                      <td className="py-4 px-6 text-center">
+                        <CheckCircle2 className="w-5 h-5 text-primary mx-auto" />
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className="py-4 px-6 text-muted-foreground">Private runners</td>
+                      <td className="py-4 px-6 text-center text-muted-foreground">-</td>
+                      <td className="py-4 px-6 text-center text-muted-foreground">-</td>
+                      <td className="py-4 px-6 text-center">
+                        <CheckCircle2 className="w-5 h-5 text-primary mx-auto" />
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className="py-4 px-6 text-muted-foreground">SLA guarantees</td>
+                      <td className="py-4 px-6 text-center text-muted-foreground">-</td>
+                      <td className="py-4 px-6 text-center text-muted-foreground">-</td>
+                      <td className="py-4 px-6 text-center">
+                        <CheckCircle2 className="w-5 h-5 text-primary mx-auto" />
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className="py-4 px-6 text-muted-foreground">Support</td>
+                      <td className="py-4 px-6 text-center">Community</td>
+                      <td className="py-4 px-6 text-center">Priority</td>
+                      <td className="py-4 px-6 text-center">Dedicated</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </Card>
           </div>
-        </Container>
+        </div>
       </section>
 
       {/* FAQ Section */}
-      <section className="py-20 bg-gray-50">
-        <Container>
+      <section className="py-20 bg-accent/50">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto">
-            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 text-center mb-12">
+            <h2 className="text-3xl sm:text-4xl font-bold text-center mb-12">
               Frequently asked questions
             </h2>
 
-            <div className="space-y-6">
+            <div className="space-y-4">
               {faqs.map((faq, index) => (
                 <FAQItem key={index} question={faq.question} answer={faq.answer} />
               ))}
             </div>
           </div>
-        </Container>
+        </div>
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-br from-indigo-600 to-purple-600">
-        <Container>
-          <div className="text-center text-white">
-            <h2 className="text-3xl sm:text-4xl font-bold mb-4">
-              Ready to get started?
-            </h2>
-            <p className="text-xl text-indigo-100 mb-8 max-w-2xl mx-auto">
-              Join teams who trust DriftWatch to maintain web quality. No credit card required.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button href="/demo" variant="secondary" size="lg">
-                Try Live Demo
-              </Button>
-              <Button href="/signup" variant="primary" size="lg" className="bg-white text-indigo-600 hover:bg-gray-50">
-                Start Free Today
-              </Button>
-            </div>
+      <section className="py-20 bg-gradient-to-br from-primary to-purple-600">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-3xl sm:text-4xl font-bold mb-4 text-white">
+            Ready to get started?
+          </h2>
+          <p className="text-xl text-primary-foreground/90 mb-8 max-w-2xl mx-auto">
+            Join teams who trust DriftWatch to maintain web quality. No credit card required.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button size="lg" variant="secondary" asChild>
+              <Link href="/demo">Try Live Demo</Link>
+            </Button>
+            <Button
+              size="lg"
+              variant="outline"
+              className="bg-white text-primary hover:bg-white/90 border-white"
+              asChild
+            >
+              <Link href="/signup">Start Free Today</Link>
+            </Button>
           </div>
-        </Container>
+        </div>
       </section>
     </>
-  );
-}
-
-function CheckIcon() {
-  return (
-    <svg className="w-6 h-6 text-green-600 mx-auto" fill="currentColor" viewBox="0 0 20 20">
-      <path
-        fillRule="evenodd"
-        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-        clipRule="evenodd"
-      />
-    </svg>
   );
 }
 
@@ -425,27 +415,25 @@ function FAQItem({ question, answer }: { question: string; answer: string }) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <Card className="cursor-pointer" padding="lg">
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="w-full text-left flex items-start justify-between"
-      >
-        <h3 className="text-lg font-semibold text-gray-900 pr-8">{question}</h3>
-        <svg
-          className={`w-6 h-6 text-gray-500 flex-shrink-0 transform transition-transform ${
-            isOpen ? 'rotate-180' : ''
-          }`}
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-        </svg>
-      </button>
-      {isOpen && (
-        <div className="mt-4 text-gray-600 leading-relaxed">
-          {answer}
+    <Card className="cursor-pointer hover:border-primary/50 transition-colors">
+      <CardHeader onClick={() => setIsOpen(!isOpen)}>
+        <div className="flex items-start justify-between">
+          <CardTitle className="text-lg font-semibold text-left pr-8">
+            {question}
+          </CardTitle>
+          <ChevronDown
+            className={`w-5 h-5 text-muted-foreground flex-shrink-0 transition-transform ${
+              isOpen ? 'rotate-180' : ''
+            }`}
+          />
         </div>
+      </CardHeader>
+      {isOpen && (
+        <CardContent className="pt-0">
+          <p className="text-muted-foreground leading-relaxed">
+            {answer}
+          </p>
+        </CardContent>
       )}
     </Card>
   );

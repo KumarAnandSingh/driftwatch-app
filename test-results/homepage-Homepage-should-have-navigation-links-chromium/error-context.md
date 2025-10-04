@@ -1,0 +1,120 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - generic [ref=e4]:
+        - link "DriftWatch" [ref=e5] [cursor=pointer]:
+          - /url: /
+          - img [ref=e7] [cursor=pointer]
+          - generic [ref=e10] [cursor=pointer]: DriftWatch
+        - generic [ref=e11]:
+          - link "Sign in" [ref=e12] [cursor=pointer]:
+            - /url: /signin
+          - link "Sign up - Create your free account" [ref=e13] [cursor=pointer]:
+            - /url: /signup
+            - text: Get Started
+    - main [ref=e14]:
+      - generic [ref=e17]:
+        - heading "Unified quality report for your web app." [level=1] [ref=e18]
+        - paragraph [ref=e19]: Catch visual regressions, accessibility issues, and performance problems before your users do. One scan, complete insight.
+        - generic [ref=e20]:
+          - link "Try Live Demo - Interactive demonstration" [ref=e21] [cursor=pointer]:
+            - /url: /demo
+            - img
+            - text: Try Live Demo
+          - link "Sign up - Start your free trial" [ref=e22] [cursor=pointer]:
+            - /url: /signup
+            - text: Sign up free
+            - img
+        - generic [ref=e26]:
+          - img [ref=e27]
+          - paragraph [ref=e30]: Dashboard Preview
+      - generic [ref=e32]:
+        - generic [ref=e33]:
+          - heading "How it works" [level=2] [ref=e34]
+          - paragraph [ref=e35]: Three simple steps to complete quality assurance
+        - generic [ref=e36]:
+          - generic [ref=e37]:
+            - img [ref=e39]
+            - generic [ref=e42]: "01"
+            - heading "Configure your project" [level=3] [ref=e43]
+            - paragraph [ref=e44]: Add your domain, verify ownership, and set up authentication if needed.
+          - generic [ref=e45]:
+            - img [ref=e47]
+            - generic [ref=e49]: "02"
+            - heading "Run DriftWatch" [level=3] [ref=e50]
+            - paragraph [ref=e51]: Our scanner crawls your site, testing flows, accessibility, performance, and visuals.
+          - generic [ref=e52]:
+            - img [ref=e54]
+            - generic [ref=e57]: "03"
+            - heading "Review & approve" [level=3] [ref=e58]
+            - paragraph [ref=e59]: Get a unified report with actionable insights. Approve baselines and track changes.
+      - generic [ref=e62]:
+        - link "Flows" [ref=e63] [cursor=pointer]:
+          - /url: /features
+          - generic [ref=e64] [cursor=pointer]:
+            - img [ref=e65] [cursor=pointer]
+            - heading "Flows" [level=4] [ref=e67] [cursor=pointer]
+        - link "Accessibility" [ref=e68] [cursor=pointer]:
+          - /url: /features
+          - generic [ref=e69] [cursor=pointer]:
+            - img [ref=e70] [cursor=pointer]
+            - heading "Accessibility" [level=4] [ref=e73] [cursor=pointer]
+        - link "Performance" [ref=e74] [cursor=pointer]:
+          - /url: /features
+          - generic [ref=e75] [cursor=pointer]:
+            - img [ref=e76] [cursor=pointer]
+            - heading "Performance" [level=4] [ref=e79] [cursor=pointer]
+        - link "Visual Regression" [ref=e80] [cursor=pointer]:
+          - /url: /features
+          - generic [ref=e81] [cursor=pointer]:
+            - img [ref=e82] [cursor=pointer]
+            - heading "Visual Regression" [level=4] [ref=e85] [cursor=pointer]
+        - link "AI Critique" [ref=e86] [cursor=pointer]:
+          - /url: /features
+          - generic [ref=e87] [cursor=pointer]:
+            - img [ref=e88] [cursor=pointer]
+            - heading "AI Critique" [level=4] [ref=e96] [cursor=pointer]
+      - generic [ref=e98]:
+        - heading "Ready to get started?" [level=2] [ref=e99]
+        - paragraph [ref=e100]: Join teams who trust DriftWatch to maintain web quality. No credit card required.
+        - generic [ref=e101]:
+          - link "View Demo - See DriftWatch in action" [ref=e102] [cursor=pointer]:
+            - /url: /demo
+            - text: View Demo
+          - link "Start Free Today - Create account" [ref=e103] [cursor=pointer]:
+            - /url: /signup
+            - text: Start Free Today
+    - contentinfo [ref=e104]:
+      - generic [ref=e105]:
+        - generic [ref=e106]:
+          - generic [ref=e107]:
+            - link "DriftWatch" [ref=e108] [cursor=pointer]:
+              - /url: /
+              - generic [ref=e109] [cursor=pointer]: DriftWatch
+            - paragraph [ref=e110]: Quality monitoring for modern web applications.
+          - generic [ref=e111]:
+            - heading "Product" [level=4] [ref=e112]
+            - generic [ref=e113]:
+              - link "Features" [ref=e114] [cursor=pointer]:
+                - /url: /features
+              - link "Pricing" [ref=e115] [cursor=pointer]:
+                - /url: /pricing
+              - link "Demo" [ref=e116] [cursor=pointer]:
+                - /url: /demo
+          - generic [ref=e117]:
+            - heading "Resources" [level=4] [ref=e118]
+            - link "Docs" [ref=e120] [cursor=pointer]:
+              - /url: /docs
+          - generic [ref=e121]:
+            - heading "Legal" [level=4] [ref=e122]
+            - generic [ref=e123]:
+              - link "Privacy" [ref=e124] [cursor=pointer]:
+                - /url: /privacy
+              - link "Terms" [ref=e125] [cursor=pointer]:
+                - /url: /terms
+        - generic [ref=e126]: © 2025 DriftWatch. All rights reserved.
+  - alert [ref=e127]
+```

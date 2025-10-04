@@ -1,0 +1,22 @@
+{
+  "forbiddenLogs": [
+    "ECONNREFUSED",
+    "UnhandledPromiseRejection",
+    "TypeError: Cannot read",
+    "Module not found",
+    "ENOENT: no such file",
+    "npm ERR!",
+    "Error: listen EADDRINUSE",
+    "prisma:error",
+    "Redis connection failed"
+  ],
+  "forbiddenStrings": [
+    "TODO: wire later",
+    "stubbed response",
+    "mock-only implementation",
+    "FIXME:",
+    "XXX:",
+    "console.log(",
+    "debugger;"
+  ]
+}

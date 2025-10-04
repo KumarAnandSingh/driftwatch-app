@@ -64,7 +64,11 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             text: `Your verification code is ${code}. It expires in 10 minutes.`
           });
         } else {
-          console.log("[Auth.js] Verification code for", identifier, "=>", code);
+          // Dev mode: log verification code to console
+          if (process.env.NODE_ENV === 'development') {
+            // eslint-disable-next-line no-console
+            console.log("[Auth.js] Verification code for", identifier, "=>", code);
+          }
         }
       }
     })

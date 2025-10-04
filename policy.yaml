@@ -1,0 +1,120 @@
+# Policy waivers for verification gates
+# Format: Each waiver has an expiry date and owner
+# CI will fail on expired waivers
+
+waivers:
+  # Example: Allow breaking API change with time-boxed waiver
+  # - gate: contracts
+  #   reason: "Adding required field to /api/users - communicated to clients"
+  #   owner: "@username"
+  #   expires: "2025-02-01"
+  #   approved_by: "@tech-lead"
+
+  # Example: Temporary security waiver
+  # - gate: security
+  #   reason: "Known false positive in library X - upstream fix pending"
+  #   cve: "CVE-2024-12345"
+  #   owner: "@security-team"
+  #   expires: "2025-01-15"
+  #   approved_by: "@ciso"
+
+# Breaking change policy
+breaking_changes:
+  # Require explicit approval for breaking changes
+  require_approval: true
+
+  # Maximum allowed age for breaking change waivers
+  max_waiver_days: 30
+
+  # API versioning enforcement
+  api:
+    require_version_bump: true
+    deprecation_notice_days: 90
+
+# Security policy
+security:
+  # Fail on vulnerabilities at these levels
+  fail_on:
+    - critical
+    - high
+
+  # Maximum age for security waivers
+  max_waiver_days: 7
+
+  # SBOM requirements
+  sbom:
+    required: true
+    format: "cyclonedx"
+
+  # License compliance
+  forbidden_licenses:
+    - "GPL-3.0"
+    - "AGPL-3.0"
+    - "SSPL"
+
+# Performance budgets
+performance:
+  budgets:
+    lcp_ms: 2500
+    fcp_ms: 1800
+    cls: 0.1
+    tbt_ms: 300
+    tti_ms: 3500
+
+  # Bundle size limits
+  bundle:
+    js_kb: 500
+    css_kb: 100
+    total_kb: 1000
+
+# Accessibility requirements
+accessibility:
+  # WCAG compliance level
+  wcag_level: "AA"
+
+  # Fail on violations at these levels
+  fail_on:
+    - critical
+    - serious
+
+# Test coverage requirements
+coverage:
+  # Minimum coverage percentage
+  lines: 80
+  branches: 75
+  functions: 80
+
+  # Enforce coverage for new/changed files
+  enforce_on_new: true
+
+# Database migration policy
+migrations:
+  # Require both forward and rollback
+  require_rollback: true
+
+  # Test migrations in isolated environment
+  require_test_db: true
+
+  # Maximum migration time (seconds)
+  max_duration_seconds: 300
+
+# PR size limits
+pr:
+  # Fail on PRs larger than this (lines)
+  max_lines: 1000
+
+  # Label required for large PRs
+  large_pr_label: "large-allowed"
+
+  # Require conventional commits
+  conventional_commits: true
+
+# Stale check
+stale:
+  # Fail if PR hasn't been updated in X days
+  max_age_days: 14
+
+  # Exclude certain labels
+  exclude_labels:
+    - "long-running"
+    - "blocked"

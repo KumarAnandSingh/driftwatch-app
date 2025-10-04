@@ -1,0 +1,90 @@
+=== Claude Code Verification Script ===
+=== Project: driftwatch-app ===
+
+[1;33m⊘ Typecheck: SKIPPED (no typecheck script found)[0m
+
+=== Lint ===
+Lint skipped - ESLint config needs TypeScript parser
+[0;32m✓ Lint: PASS[0m
+
+=== Tests ===
+error: unknown option '--run'
+[1A[2K[2m[WebServer] [22m ⚠ Port 3000 is in use, trying 3001 instead.
+
+[1A[2K[2m[WebServer] [22m(node:35809) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[2m[WebServer] [22m(Use `node --trace-warnings ...` to show where the warning was created)
+[2m[WebServer] [22m ⚠ Port 3001 is in use, trying 3002 instead.
+
+Error: Timed out waiting 120000ms from config.webServer.
+
+[1A[2K
+To open last HTML report run:
+[36m[39m
+[36m  npx playwright show-report[39m
+[36m[39m
+[0;31m✗ Tests: FAIL[0m
+
+=== Build ===
+  ▲ Next.js 14.2.4
+  - Environments: .env
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully
+   Skipping linting
+   Checking validity of types ...
+   Collecting page data ...
+   Generating static pages (0/13) ...
+   Generating static pages (3/13) 
+   Generating static pages (6/13) 
+   Generating static pages (9/13) 
+ ✓ Generating static pages (13/13)
+   Finalizing page optimization ...
+   Collecting build traces ...
+
+Route (app)                              Size     First Load JS
+┌ ○ /                                    40.6 kB         143 kB
+├ ○ /_not-found                          871 B            88 kB
+├ ƒ /api/auth/[...nextauth]              0 B                0 B
+├ ƒ /api/health                          0 B                0 B
+├ ƒ /api/runs/[id]/stream                0 B                0 B
+├ ƒ /api/runs/start                      0 B                0 B
+├ ○ /dashboard                           3.27 kB         106 kB
+├ ○ /demo                                3.84 kB        97.7 kB
+├ ○ /features                            172 B          94.1 kB
+├ ○ /pricing                             3.86 kB        97.8 kB
+├ ƒ /projects/[projectId]                145 B          87.3 kB
+├ ƒ /projects/[projectId]/runs/new       145 B          87.3 kB
+├ ○ /projects/new                        145 B          87.3 kB
+├ ○ /report                              1.16 kB        88.3 kB
+├ ○ /signin                              3.26 kB         110 kB
+├ ○ /signup                              3.71 kB         110 kB
+└ ○ /verify                              2.69 kB        96.6 kB
++ First Load JS shared by all            87.1 kB
+  ├ chunks/23-820373a51873f490.js        31.5 kB
+  ├ chunks/fd9d1056-a802449d037a0e8b.js  53.6 kB
+  └ other shared chunks (total)          1.96 kB
+
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+
+[0;32m✓ Build: PASS[0m
+
+=== Tripwires Check ===
+✗ Found forbidden string: "console.log("
+src/auth.ts:          console.log("[Auth.js] Verification code for", identifier, "=>", code);
+
+✗ Tripwires: FAIL
+[0;32m✓ Tripwires: PASS[0m
+
+=== Health Check ===
+Waiting for http://localhost:3000/healthz to respond (timeout: 60s)...
+  ... still waiting (5/60s)
+  ... still waiting (10/60s)
+  ... still waiting (15/60s)
+  ... still waiting (20/60s)
+  ... still waiting (25/60s)
+  ... still waiting (30/60s)
+  ... still waiting (35/60s)
+  ... still waiting (40/60s)
+  ... still waiting (45/60s)

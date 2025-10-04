@@ -49,3 +49,6 @@ prisma/*.db-journal
 # OS
 .DS_Store
 Thumbs.db
+
+*storybook.log
+storybook-static

@@ -5,103 +5,62 @@ export function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-gray-50 border-t border-gray-200 mt-20">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+    <footer className="border-t border-border bg-accent/30 py-12">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
           {/* Brand */}
           <div className="col-span-1 md:col-span-1">
-            <Link href="/" className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-lg">D</span>
-              </div>
-              <span className="font-bold text-xl text-gray-900">DriftWatch</span>
+            <Link href="/" className="flex items-center gap-2 mb-4">
+              <div className="w-6 h-6 rounded bg-gradient-to-br from-primary to-purple-600" />
+              <span className="font-semibold">DriftWatch</span>
             </Link>
-            <p className="mt-4 text-sm text-gray-600">
-              Unified quality reports for modern web applications.
+            <p className="text-sm text-muted-foreground">
+              Quality monitoring for modern web applications.
             </p>
-            <div className="mt-4 flex space-x-2">
-              <span className="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium bg-green-100 text-green-800">
-                Open Source
-              </span>
-            </div>
           </div>
 
           {/* Product */}
           <div>
-            <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wider">Product</h3>
-            <ul className="mt-4 space-y-3">
-              <li>
-                <Link href="/features" className="text-sm text-gray-600 hover:text-gray-900">
-                  Features
-                </Link>
-              </li>
-              <li>
-                <Link href="/demo" className="text-sm text-gray-600 hover:text-gray-900">
-                  Demo
-                </Link>
-              </li>
-              <li>
-                <Link href="/pricing" className="text-sm text-gray-600 hover:text-gray-900">
-                  Pricing
-                </Link>
-              </li>
-              <li>
-                <Link href="/docs" className="text-sm text-gray-600 hover:text-gray-900">
-                  Documentation
-                </Link>
-              </li>
-            </ul>
+            <h4 className="mb-4 text-sm font-semibold">Product</h4>
+            <div className="space-y-2 text-sm text-muted-foreground">
+              <Link href="/features" className="block hover:text-foreground">
+                Features
+              </Link>
+              <Link href="/pricing" className="block hover:text-foreground">
+                Pricing
+              </Link>
+              <Link href="/demo" className="block hover:text-foreground">
+                Demo
+              </Link>
+            </div>
           </div>
 
-          {/* Company */}
+          {/* Resources */}
           <div>
-            <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wider">Company</h3>
-            <ul className="mt-4 space-y-3">
-              <li>
-                <Link href="/about" className="text-sm text-gray-600 hover:text-gray-900">
-                  About
-                </Link>
-              </li>
-              <li>
-                <Link href="/blog" className="text-sm text-gray-600 hover:text-gray-900">
-                  Blog
-                </Link>
-              </li>
-              <li>
-                <a href="https://github.com/driftwatch" target="_blank" rel="noopener noreferrer" className="text-sm text-gray-600 hover:text-gray-900">
-                  GitHub
-                </a>
-              </li>
-            </ul>
+            <h4 className="mb-4 text-sm font-semibold">Resources</h4>
+            <div className="space-y-2 text-sm text-muted-foreground">
+              <Link href="/docs" className="block hover:text-foreground">
+                Docs
+              </Link>
+            </div>
           </div>
 
           {/* Legal */}
           <div>
-            <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wider">Legal</h3>
-            <ul className="mt-4 space-y-3">
-              <li>
-                <Link href="/privacy" className="text-sm text-gray-600 hover:text-gray-900">
-                  Privacy Policy
-                </Link>
-              </li>
-              <li>
-                <Link href="/terms" className="text-sm text-gray-600 hover:text-gray-900">
-                  Terms of Service
-                </Link>
-              </li>
-              <li>
-                <Link href="/security" className="text-sm text-gray-600 hover:text-gray-900">
-                  Security
-                </Link>
-              </li>
-            </ul>
+            <h4 className="mb-4 text-sm font-semibold">Legal</h4>
+            <div className="space-y-2 text-sm text-muted-foreground">
+              <Link href="/privacy" className="block hover:text-foreground">
+                Privacy
+              </Link>
+              <Link href="/terms" className="block hover:text-foreground">
+                Terms
+              </Link>
+            </div>
           </div>
         </div>
 
-        <div className="mt-8 pt-8 border-t border-gray-200">
-          <p className="text-sm text-gray-500 text-center">
-            &copy; {currentYear} DriftWatch. All rights reserved.
-          </p>
+        <div className="pt-8 border-t border-border text-center text-sm text-muted-foreground">
+          © {currentYear} DriftWatch. All rights reserved.
         </div>
       </div>
     </footer>

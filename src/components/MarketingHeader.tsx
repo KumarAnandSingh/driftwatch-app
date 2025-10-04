@@ -64,10 +64,10 @@ export function MarketingHeader({ currentPath }: MarketingHeaderProps) {
 
         <div className="flex items-center gap-3">
           <Button variant="ghost" size="sm" asChild>
-            <Link href="/sign-in">Sign in</Link>
+            <Link href="/signin">Sign in</Link>
           </Button>
           <Button size="sm" asChild>
-            <Link href="/sign-up">Sign up</Link>
+            <Link href="/signup" aria-label="Sign up - Create your free account">Get Started</Link>
           </Button>
         </div>
       </div>
