@@ -16,6 +16,7 @@
 - ⚡ **Performance Monitoring** - Core Web Vitals tracking
 - 👁️ **Visual Regression** - Screenshot comparison
 - 🤖 **AI Design Critique** - Intelligent design feedback
+- ✨ **AI Fix Engine** - Automated code fix generation with multi-stage algorithm
 - 🔐 **Secure Authentication** - Email OTP & Google OAuth
 - 📊 **Beautiful Dashboard** - Real-time monitoring
 - 🎨 **Modern UI** - Animated Figma design implementation
@@ -130,6 +131,7 @@ driftwatch/
 │   └── seed.ts                 # Seed data
 ├── public/                     # Static assets
 ├── docs/                       # Documentation
+│   ├── AI_FIX_ENGINE.md        # AI Fix Engine documentation
 │   ├── PHASE2_COMPLETION_SUMMARY.md
 │   ├── PHASE3_COMPLETION_SUMMARY.md
 │   ├── DESIGN_FIX_REPORT.md
@@ -384,6 +386,44 @@ Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for det
    git push origin feature/amazing-feature
    ```
 7. **Open a Pull Request**
+
+## 🤖 AI Fix Engine
+
+DriftWatch includes an intelligent AI-powered fix engine that automatically generates production-ready code fixes for accessibility, design, and performance issues.
+
+### Key Features
+- **Multi-Stage Algorithm**: 4-stage processing for high-quality fixes
+  1. Issue Classification & Prioritization
+  2. Context Analysis & Pattern Recognition
+  3. Enhanced Fix Generation with WCAG 2.1 AA compliance
+  4. Quality Validation & Best Practices Check
+
+- **No Subscription Required**: Free with your own Anthropic API key
+- **Smart Prioritization**: Automatically handles critical issues first
+- **WCAG Compliance**: Ensures all fixes meet accessibility standards
+- **Rate Limiting**: Built-in protection against API throttling
+- **Fallback Handling**: Graceful degradation when generation fails
+
+### How It Works
+
+1. **Add Your API Key** (one-time setup)
+   - Get free API key from [Anthropic Console](https://console.anthropic.com/settings/keys)
+   - Go to Settings → API Keys
+   - Paste your key (encrypted with AES-256)
+
+2. **Generate Fixes**
+   - View scan results with issues
+   - Click "Fix It For Me" button
+   - AI analyzes and generates fixes
+   - See before/after code comparison
+
+3. **Apply Fixes**
+   - Copy optimized code snippets
+   - Get detailed explanations
+   - Understand the impact
+
+### Documentation
+For detailed technical documentation, see [AI_FIX_ENGINE.md](docs/AI_FIX_ENGINE.md)
 
 ## 📄 License
 
