@@ -1,0 +1,512 @@
+{
+  "crawl": {
+    "pages": 7,
+    "time": "10.66"
+  },
+  "screenshots": [
+    {
+      "url": "https://www.studyify.in",
+      "path": "/Users/priyasingh/driftwatch-app/public/artifacts/screenshot_https___www_studyify_in_1759548752981.png",
+      "width": 1920,
+      "height": 1080,
+      "size": 32077,
+      "timestamp": "2025-10-04T03:32:33.091Z"
+    },
+    {
+      "url": "https://www.studyify.in/dashboard",
+      "path": "/Users/priyasingh/driftwatch-app/public/artifacts/screenshot_https___www_studyify_in_dashboard_1759548755646.png",
+      "width": 1920,
+      "height": 1080,
+      "size": 32077,
+      "timestamp": "2025-10-04T03:32:35.757Z"
+    },
+    {
+      "url": "https://www.studyify.in/lessons",
+      "path": "/Users/priyasingh/driftwatch-app/public/artifacts/screenshot_https___www_studyify_in_lessons_1759548758306.png",
+      "width": 1920,
+      "height": 1080,
+      "size": 54533,
+      "timestamp": "2025-10-04T03:32:38.424Z"
+    },
+    {
+      "url": "https://www.studyify.in/puzzles",
+      "path": "/Users/priyasingh/driftwatch-app/public/artifacts/screenshot_https___www_studyify_in_puzzles_1759548760850.png",
+      "width": 1920,
+      "height": 1080,
+      "size": 35719,
+      "timestamp": "2025-10-04T03:32:40.959Z"
+    },
+    {
+      "url": "https://www.studyify.in/play",
+      "path": "/Users/priyasingh/driftwatch-app/public/artifacts/screenshot_https___www_studyify_in_play_1759548763517.png",
+      "width": 1920,
+      "height": 1080,
+      "size": 71303,
+      "timestamp": "2025-10-04T03:32:43.666Z"
+    },
+    {
+      "url": "https://www.studyify.in/multiplayer",
+      "path": "/Users/priyasingh/driftwatch-app/public/artifacts/screenshot_https___www_studyify_in_multiplayer_1759548766499.png",
+      "width": 1920,
+      "height": 1080,
+      "size": 34647,
+      "timestamp": "2025-10-04T03:32:46.612Z"
+    },
+    {
+      "url": "https://www.studyify.in/leaderboard",
+      "path": "/Users/priyasingh/driftwatch-app/public/artifacts/screenshot_https___www_studyify_in_leaderboard_1759548769248.png",
+      "width": 1920,
+      "height": 1080,
+      "size": 10835,
+      "timestamp": "2025-10-04T03:32:49.341Z"
+    }
+  ],
+  "accessibility": [
+    {
+      "url": "https://www.studyify.in",
+      "violations": [],
+      "passes": 0,
+      "incomplete": 0,
+      "inapplicable": 2,
+      "timestamp": "2025-10-04T03:32:51.112Z",
+      "score": 100
+    },
+    {
+      "url": "https://www.studyify.in/dashboard",
+      "violations": [],
+      "passes": 0,
+      "incomplete": 0,
+      "inapplicable": 2,
+      "timestamp": "2025-10-04T03:32:52.757Z",
+      "score": 100
+    },
+    {
+      "url": "https://www.studyify.in/lessons",
+      "violations": [],
+      "passes": 1,
+      "incomplete": 0,
+      "inapplicable": 1,
+      "timestamp": "2025-10-04T03:32:54.312Z",
+      "score": 100
+    },
+    {
+      "url": "https://www.studyify.in/puzzles",
+      "violations": [],
+      "passes": 1,
+      "incomplete": 0,
+      "inapplicable": 1,
+      "timestamp": "2025-10-04T03:32:55.903Z",
+      "score": 100
+    },
+    {
+      "url": "https://www.studyify.in/play",
+      "violations": [],
+      "passes": 0,
+      "incomplete": 0,
+      "inapplicable": 2,
+      "timestamp": "2025-10-04T03:32:57.481Z",
+      "score": 100
+    },
+    {
+      "url": "https://www.studyify.in/multiplayer",
+      "violations": [],
+      "passes": 0,
+      "incomplete": 0,
+      "inapplicable": 2,
+      "timestamp": "2025-10-04T03:32:59.009Z",
+      "score": 100
+    },
+    {
+      "url": "https://www.studyify.in/leaderboard",
+      "violations": [],
+      "passes": 0,
+      "incomplete": 0,
+      "inapplicable": 2,
+      "timestamp": "2025-10-04T03:33:00.702Z",
+      "score": 100
+    }
+  ],
+  "aiCritique": [
+    {
+      "url": "https://www.studyify.in",
+      "score": 85,
+      "summary": "The Chess Academy dashboard presents a clean, modern interface with clear navigation and well-structured content blocks. The design effectively balances functionality with aesthetics, using a consistent color scheme and clear visual hierarchy to guide users through different learning pathways.",
+      "insights": [
+        {
+          "category": "layout",
+          "severity": "low",
+          "title": "Grid Structure Balance",
+          "description": "The 2x2 card layout for main features and 3-column stats display creates a balanced visual structure. However, there's some inconsistency in card sizes between the top and bottom rows.",
+          "suggestion": "Standardize card dimensions across rows or intentionally differentiate them with clearer visual hierarchy."
+        },
+        {
+          "category": "color",
+          "severity": "medium",
+          "title": "Color Coding System",
+          "description": "Each section uses distinct colors (blue, green, purple, orange) which aids in visual separation, but some colors may not meet WCAG contrast requirements.",
+          "suggestion": "Adjust the brightness and contrast of feature colors, particularly the green and orange, to ensure 4.5:1 contrast ratio with text."
+        },
+        {
+          "category": "typography",
+          "severity": "low",
+          "title": "Font Hierarchy",
+          "description": "Text hierarchy is clear with distinct sizes for headings and body text. However, some descriptive text could be more prominent.",
+          "suggestion": "Increase the font size of feature descriptions slightly to improve readability."
+        },
+        {
+          "category": "accessibility",
+          "severity": "medium",
+          "title": "Interactive Elements",
+          "description": "Action buttons like 'Begin', 'Solve', 'Play' lack clear visual feedback states.",
+          "suggestion": "Add hover and focus states to all interactive elements and ensure keyboard navigation indicators are visible."
+        }
+      ],
+      "strengths": [
+        "Clean, minimalist design that focuses on core functionality",
+        "Consistent iconography style across features",
+        "Clear progress tracking with percentage indicators",
+        "Logical grouping of related features and statistics",
+        "Simple and intuitive navigation sidebar"
+      ],
+      "improvements": [
+        "Add more descriptive alt text for icons and images",
+        "Implement a more prominent visual state for the current navigation item",
+        "Consider adding tooltips for numerical statistics to provide context",
+        "Include loading states for dynamic content",
+        "Add breadcrumb navigation for deeper pages in the hierarchy"
+      ],
+      "timestamp": "2025-10-04T03:33:13.258Z"
+    },
+    {
+      "url": "https://www.studyify.in/dashboard",
+      "score": 82,
+      "summary": "This chess learning platform features a clean, modern dashboard with clear navigation and well-organized content blocks. The interface effectively presents key learning paths and progress metrics, though there are opportunities to enhance visual hierarchy and accessibility.",
+      "insights": [
+        {
+          "category": "layout",
+          "severity": "low",
+          "title": "Card Layout Structure",
+          "description": "The dashboard uses a card-based layout with clear sections for different features. The 2x2 grid for main features and 1x3 grid for metrics creates good visual organization.",
+          "suggestion": "Consider adding subtle shadows or borders to better define card boundaries and improve visual hierarchy."
+        },
+        {
+          "category": "typography",
+          "severity": "medium",
+          "title": "Font Size Hierarchy",
+          "description": "Some text elements lack sufficient size contrast between headers and body text, particularly in the metric cards.",
+          "suggestion": "Increase size difference between headings and body text. Consider making metric numbers (0, 1200) more prominent."
+        },
+        {
+          "category": "color",
+          "severity": "low",
+          "title": "Color Coding System",
+          "description": "Good use of distinct colors for different sections (blue for Learn, green for Puzzles, etc.), helping with visual navigation.",
+          "suggestion": "Ensure color contrast ratios meet WCAG 2.1 AA standards, particularly for the purple rating number."
+        },
+        {
+          "category": "accessibility",
+          "severity": "medium",
+          "title": "Interactive Elements",
+          "description": "Action buttons like 'Begin', 'Solve', 'Play' could benefit from more distinct styling to indicate interactivity.",
+          "suggestion": "Add hover states and focus indicators for interactive elements. Ensure all buttons have sufficient touch targets."
+        },
+        {
+          "category": "ux",
+          "severity": "low",
+          "title": "Progress Indicators",
+          "description": "Clear presentation of progress metrics, but could be more engaging for new users showing 0%.",
+          "suggestion": "Add encouraging micro-copy or visual elements for empty states to motivate initial engagement."
+        }
+      ],
+      "strengths": [
+        "Clean and uncluttered interface design",
+        "Clear navigation structure with logical grouping",
+        "Consistent use of iconography and colors for different features",
+        "Well-organized metric displays",
+        "Straightforward call-to-action buttons"
+      ],
+      "improvements": [
+        "Enhance visual hierarchy with more distinct typography scaling",
+        "Add hover and focus states for interactive elements",
+        "Implement more engaging empty states for progress metrics",
+        "Increase contrast for some text elements",
+        "Add more visual feedback for clickable elements"
+      ],
+      "timestamp": "2025-10-04T03:33:25.572Z"
+    },
+    {
+      "url": "https://www.studyify.in/lessons",
+      "score": 85,
+      "summary": "A clean, well-structured chess learning platform with strong information hierarchy and clear user pathways. The design effectively balances simplicity with functionality, though there are opportunities to enhance accessibility and visual feedback systems.",
+      "insights": [
+        {
+          "category": "layout",
+          "severity": "low",
+          "title": "Card Layout Structure",
+          "description": "The lesson cards follow a consistent grid pattern with clear visual hierarchy. Each card contains well-organized information about duration, modules, and progress.",
+          "suggestion": "Consider adding subtle hover states to cards to improve interaction feedback."
+        },
+        {
+          "category": "typography",
+          "severity": "medium",
+          "title": "Text Hierarchy Enhancement",
+          "description": "While headings are distinct, the module lists could benefit from better visual hierarchy to distinguish between main and secondary information.",
+          "suggestion": "Increase contrast between primary headers and supporting text in module lists. Consider using weights rather than just size differences."
+        },
+        {
+          "category": "color",
+          "severity": "low",
+          "title": "Difficulty Level Indicators",
+          "description": "The difficulty tags (beginner, intermediate, advanced) use appropriate colors but could be more prominent.",
+          "suggestion": "Add subtle background colors to difficulty badges while maintaining current text colors for better visual distinction."
+        },
+        {
+          "category": "spacing",
+          "severity": "low",
+          "title": "Content Density",
+          "description": "Good use of whitespace between cards and sections. Internal card spacing is well-balanced.",
+          "suggestion": "Consider slightly increasing padding between module items within cards for better readability."
+        },
+        {
+          "category": "accessibility",
+          "severity": "medium",
+          "title": "Progress Indication",
+          "description": "Progress bars may not meet WCAG contrast requirements, and percentage indicators could be clearer.",
+          "suggestion": "Increase contrast of progress bars and add aria-labels for screen readers."
+        },
+        {
+          "category": "ux",
+          "severity": "medium",
+          "title": "Action Button Visibility",
+          "description": "'Start Lesson' buttons are prominent but could be more engaging.",
+          "suggestion": "Add hover and focus states to buttons, consider adding icons to enhance visual appeal."
+        }
+      ],
+      "strengths": [
+        "Clean and consistent card-based layout",
+        "Clear visual hierarchy in lesson presentation",
+        "Effective use of whitespace",
+        "Logical information grouping",
+        "Strong primary action buttons"
+      ],
+      "improvements": [
+        "Enhance interactive feedback states",
+        "Improve accessibility of progress indicators",
+        "Add more visual distinction to difficulty levels",
+        "Implement hover states for interactive elements",
+        "Include loading states for dynamic content",
+        "Add keyboard navigation improvements"
+      ],
+      "timestamp": "2025-10-04T03:33:38.034Z"
+    },
+    {
+      "url": "https://www.studyify.in/puzzles",
+      "score": 82,
+      "summary": "A clean and focused chess learning interface with good functional hierarchy and clear interactive elements. The design effectively balances simplicity with functionality, though there are opportunities to enhance accessibility and user feedback mechanisms.",
+      "insights": [
+        {
+          "category": "layout",
+          "severity": "low",
+          "title": "Clean Navigation Structure",
+          "description": "Left sidebar navigation provides clear hierarchy and easy access to main sections. The chess board is prominently centered with good proportions.",
+          "suggestion": "Consider adding visual indicators for current section to improve navigation context."
+        },
+        {
+          "category": "accessibility",
+          "severity": "medium",
+          "title": "Button Contrast Enhancement",
+          "description": "The 'Show Solution' and 'Coach' buttons could benefit from better contrast ratios. Current gold/orange might not meet WCAG AA standards.",
+          "suggestion": "Increase contrast of button colors and ensure text meets 4.5:1 contrast ratio requirement."
+        },
+        {
+          "category": "ux",
+          "severity": "low",
+          "title": "Progress Indication",
+          "description": "The 0% completion and puzzle counting system is clear but minimal. Users might benefit from more detailed progress tracking.",
+          "suggestion": "Add a progress bar showing advancement through difficulty levels and achievement markers."
+        },
+        {
+          "category": "spacing",
+          "severity": "low",
+          "title": "Component Spacing",
+          "description": "Good use of whitespace around the chess board and between major elements. Button grouping is logical.",
+          "suggestion": "Consider adding slightly more padding between puzzle navigation numbers for better touch targets."
+        }
+      ],
+      "strengths": [
+        "Clean and distraction-free interface focused on learning",
+        "Clear hierarchy with well-organized navigation",
+        "Logical grouping of related controls and information",
+        "Responsive chess board sizing",
+        "Clear instruction text and puzzle objectives"
+      ],
+      "improvements": [
+        "Add keyboard shortcuts with visible indicators",
+        "Implement stronger visual feedback for active/completed puzzles",
+        "Enhance button contrast ratios for better accessibility",
+        "Add tooltips for button functions",
+        "Include a more detailed progress tracking system",
+        "Consider adding animation for move demonstrations"
+      ],
+      "timestamp": "2025-10-04T03:33:49.096Z"
+    },
+    {
+      "url": "https://www.studyify.in/play",
+      "score": 85,
+      "summary": "A clean, well-organized chess learning platform with a clear difficulty progression system. The interface effectively combines visual hierarchy and user-friendly navigation while maintaining consistent branding throughout.",
+      "insights": [
+        {
+          "category": "layout",
+          "severity": "low",
+          "title": "Grid Structure",
+          "description": "The 3x3 grid layout for difficulty levels creates clear visual organization and progression. However, the cards could be more uniform in height.",
+          "suggestion": "Standardize card heights within each row to create perfect alignment and visual balance."
+        },
+        {
+          "category": "typography",
+          "severity": "medium",
+          "title": "Text Hierarchy",
+          "description": "While headings are clear, the difficulty labels ('Difficulty: beginner') could be more visually distinct from description text.",
+          "suggestion": "Use a different font weight or color for difficulty labels to improve scanning."
+        },
+        {
+          "category": "color",
+          "severity": "low",
+          "title": "Level Indicators",
+          "description": "The green level indicators provide good visual feedback, but Level 9's yellow color seems inconsistent with the established pattern.",
+          "suggestion": "Consider using a consistent color scheme for all levels, perhaps with increasing saturation to indicate progression."
+        },
+        {
+          "category": "spacing",
+          "severity": "medium",
+          "title": "Card Padding",
+          "description": "Internal padding within cards is slightly inconsistent, particularly around icons and text.",
+          "suggestion": "Implement a consistent padding system (e.g., 16px all around) for all card elements."
+        },
+        {
+          "category": "accessibility",
+          "severity": "medium",
+          "title": "Focus States",
+          "description": "No visible focus states are shown in the interface for keyboard navigation.",
+          "suggestion": "Add clear focus indicators for all interactive elements to improve keyboard accessibility."
+        }
+      ],
+      "strengths": [
+        "Clean and intuitive navigation structure",
+        "Clear visual hierarchy with well-defined levels",
+        "Consistent branding and color scheme",
+        "Effective use of white space between elements",
+        "Clear call-to-action buttons with good contrast"
+      ],
+      "improvements": [
+        "Add hover states for interactive elements",
+        "Implement ARIA labels for better screen reader support",
+        "Standardize card heights within rows",
+        "Increase contrast for difficulty labels",
+        "Add progress indicators or completion states for levels"
+      ],
+      "timestamp": "2025-10-04T03:33:59.605Z"
+    },
+    {
+      "url": "https://www.studyify.in/multiplayer",
+      "score": 85,
+      "summary": "A clean, modern multiplayer chess interface with well-organized time control options. The design effectively balances functionality with simplicity, using a dark theme that's appropriate for extended gaming sessions. The layout demonstrates good hierarchy and clear categorization of game modes.",
+      "insights": [
+        {
+          "category": "layout",
+          "severity": "low",
+          "title": "Grid Layout Structure",
+          "description": "The 3x3 grid of time control options is well-organized and symmetrical, making it easy to scan and compare options.",
+          "suggestion": "Consider adding hover states to make the clickable nature of the time control cards more apparent"
+        },
+        {
+          "category": "typography",
+          "severity": "medium",
+          "title": "Time Format Readability",
+          "description": "The time format notation (e.g., '3+2') could be confusing for new players who aren't familiar with chess timing conventions.",
+          "suggestion": "Add small tooltips or help icons that explain the time format notation for newcomers"
+        },
+        {
+          "category": "color",
+          "severity": "low",
+          "title": "Game Mode Color Coding",
+          "description": "The color-coding system (BULLET, BLITZ, RAPID, CLASSICAL) effectively differentiates game types, though some colors could have better contrast.",
+          "suggestion": "Increase contrast ratio for the yellow BLITZ tag to meet WCAG AA standards"
+        },
+        {
+          "category": "accessibility",
+          "severity": "medium",
+          "title": "Keyboard Navigation",
+          "description": "The time control options don't show clear focus indicators for keyboard navigation.",
+          "suggestion": "Add visible focus states to all interactive elements for better keyboard accessibility"
+        }
+      ],
+      "strengths": [
+        "Clear visual hierarchy with prominent game mode options",
+        "Consistent dark theme that reduces eye strain",
+        "Simple and intuitive navigation structure",
+        "Real-time connection status indicator",
+        "Clean categorization of game types by color"
+      ],
+      "improvements": [
+        "Add more descriptive text for each time control option",
+        "Implement hover states for interactive elements",
+        "Include a quick tutorial or help section for new players",
+        "Enhance contrast ratios for some color indicators",
+        "Add progress indication for the connection process"
+      ],
+      "timestamp": "2025-10-04T03:34:10.681Z"
+    },
+    {
+      "url": "https://www.studyify.in/leaderboard",
+      "score": 45,
+      "summary": "This leaderboard page appears to be in a very early development stage with minimal content and functionality. While the navigation sidebar provides clear structure, the main content area lacks proper implementation and user feedback. The design requires significant development to meet basic UX/UI and accessibility standards.",
+      "insights": [
+        {
+          "category": "layout",
+          "severity": "high",
+          "title": "Empty Content Area",
+          "description": "The main content area only displays a placeholder message without any actual leaderboard implementation, creating a poor user experience",
+          "suggestion": "Implement a proper leaderboard table/grid showing player rankings, scores, and relevant statistics. Include loading states and empty states designs."
+        },
+        {
+          "category": "ux",
+          "severity": "medium",
+          "title": "Navigation Structure",
+          "description": "While the sidebar navigation is present, it lacks visual hierarchy and proper spacing between items",
+          "suggestion": "Add grouping, icons, and better visual separation between nav items. Consider using different weights or colors to show active states."
+        },
+        {
+          "category": "accessibility",
+          "severity": "medium",
+          "title": "Current Rating Display",
+          "description": "The current rating display at bottom lacks context and proper labeling",
+          "suggestion": "Add proper ARIA labels and visual context to explain what the rating represents. Consider moving it to a more logical location in the UI."
+        },
+        {
+          "category": "color",
+          "severity": "low",
+          "title": "Limited Color Palette",
+          "description": "The interface uses minimal colors, missing opportunities for visual hierarchy and engagement",
+          "suggestion": "Develop a fuller color system that maintains accessibility while adding visual interest and helping users understand interface states."
+        }
+      ],
+      "strengths": [
+        "Clean and simple sidebar navigation layout",
+        "Uncluttered interface with good use of whitespace",
+        "Clear page title and section labeling"
+      ],
+      "improvements": [
+        "Implement actual leaderboard functionality with proper data display",
+        "Add loading states and empty states designs",
+        "Enhance navigation with better visual hierarchy and active states",
+        "Improve accessibility with proper ARIA labels and keyboard navigation",
+        "Develop a more engaging color system while maintaining simplicity",
+        "Add proper error handling and user feedback mechanisms",
+        "Include pagination or infinite scroll for leaderboard entries"
+      ],
+      "timestamp": "2025-10-04T03:34:22.284Z"
+    }
+  ],
+  "errors": []
+}

@@ -1,4 +1,4 @@
-(node:80548) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/priyasingh/driftwatch-app/scripts/test-quick.js is not specified and it doesn't parse as CommonJS.
+(node:81720) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/priyasingh/driftwatch-app/scripts/test-quick.js is not specified and it doesn't parse as CommonJS.
 Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
 To eliminate this warning, add "type": "module" to /Users/priyasingh/driftwatch-app/package.json.
 (Use `node --trace-warnings ...` to show where the warning was created)
@@ -13,7 +13,7 @@ Target: https://www.studyify.in
 Max Depth: 2
 Max Pages: 10
 
-✅ CRAWLING COMPLETE (11.45s)
+✅ CRAWLING COMPLETE (10.66s)
 📊 Pages discovered: 7
 
    1. [Depth 0] https://www.studyify.in
@@ -44,21 +44,21 @@ Max Pages: 10
 Capturing 7 screenshots...
 
 📸 [1/7] Capturing: https://www.studyify.in
-   ✅ Saved: screenshot_https___www_studyify_in_1759548646400.png (31KB)
+   ✅ Saved: screenshot_https___www_studyify_in_1759548752981.png (31KB)
 📸 [2/7] Capturing: https://www.studyify.in/dashboard
-   ✅ Saved: screenshot_https___www_studyify_in_dashboard_1759548649013.png (31KB)
+   ✅ Saved: screenshot_https___www_studyify_in_dashboard_1759548755646.png (31KB)
 📸 [3/7] Capturing: https://www.studyify.in/lessons
-   ✅ Saved: screenshot_https___www_studyify_in_lessons_1759548651652.png (53KB)
+   ✅ Saved: screenshot_https___www_studyify_in_lessons_1759548758306.png (53KB)
 📸 [4/7] Capturing: https://www.studyify.in/puzzles
-   ✅ Saved: screenshot_https___www_studyify_in_puzzles_1759548654238.png (35KB)
+   ✅ Saved: screenshot_https___www_studyify_in_puzzles_1759548760850.png (35KB)
 📸 [5/7] Capturing: https://www.studyify.in/play
-   ✅ Saved: screenshot_https___www_studyify_in_play_1759548657003.png (70KB)
+   ✅ Saved: screenshot_https___www_studyify_in_play_1759548763517.png (70KB)
 📸 [6/7] Capturing: https://www.studyify.in/multiplayer
-   ✅ Saved: screenshot_https___www_studyify_in_multiplayer_1759548659686.png (34KB)
+   ✅ Saved: screenshot_https___www_studyify_in_multiplayer_1759548766499.png (34KB)
 📸 [7/7] Capturing: https://www.studyify.in/leaderboard
-   ✅ Saved: screenshot_https___www_studyify_in_leaderboard_1759548662274.png (11KB)
+   ✅ Saved: screenshot_https___www_studyify_in_leaderboard_1759548769248.png (11KB)
 
-✅ SCREENSHOTS COMPLETE (18.74s)
+✅ SCREENSHOTS COMPLETE (18.96s)
 📊 Total captured: 7/7
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -88,13 +88,64 @@ Scanning 7 pages for WCAG 2.1 AA compliance...
    ✅ Score: 100/100
    📊 Violations: 0 | Passes: 0
 
-✅ ACCESSIBILITY COMPLETE (10.99s)
+✅ ACCESSIBILITY COMPLETE (11.29s)
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 🤖 PHASE 4: AI DESIGN CRITIQUE (Claude Sonnet 3.5)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-❌ ANTHROPIC_API_KEY not configured
-   Please set a valid API key in .env file
+Analyzing 7 screenshots with AI...
+
+🤖 [1/7] Critiquing: https://www.studyify.in
+The model 'claude-3-5-sonnet-20241022' is deprecated and will reach end-of-life on October 22, 2025
+Please migrate to a newer model. Visit https://docs.anthropic.com/en/docs/resources/model-deprecations for more information.
+   ✅ AI Design Score: 85/100
+   📝 The Chess Academy dashboard presents a clean, modern interface with clear navigation and well-structured content blocks. The design effectively balances functionality with aesthetics, using a consistent color scheme and clear visual hierarchy to guide users through different learning pathways.
+   📊 Insights: 4 | Strengths: 5 | Improvements: 5
+   🔍 Top Issue: [layout] Grid Structure Balance
+🤖 [2/7] Critiquing: https://www.studyify.in/dashboard
+The model 'claude-3-5-sonnet-20241022' is deprecated and will reach end-of-life on October 22, 2025
+Please migrate to a newer model. Visit https://docs.anthropic.com/en/docs/resources/model-deprecations for more information.
+   ✅ AI Design Score: 82/100
+   📝 This chess learning platform features a clean, modern dashboard with clear navigation and well-organized content blocks. The interface effectively presents key learning paths and progress metrics, though there are opportunities to enhance visual hierarchy and accessibility.
+   📊 Insights: 5 | Strengths: 5 | Improvements: 5
+   🔍 Top Issue: [layout] Card Layout Structure
+🤖 [3/7] Critiquing: https://www.studyify.in/lessons
+The model 'claude-3-5-sonnet-20241022' is deprecated and will reach end-of-life on October 22, 2025
+Please migrate to a newer model. Visit https://docs.anthropic.com/en/docs/resources/model-deprecations for more information.
+   ✅ AI Design Score: 85/100
+   📝 A clean, well-structured chess learning platform with strong information hierarchy and clear user pathways. The design effectively balances simplicity with functionality, though there are opportunities to enhance accessibility and visual feedback systems.
+   📊 Insights: 6 | Strengths: 5 | Improvements: 6
+   🔍 Top Issue: [layout] Card Layout Structure
+🤖 [4/7] Critiquing: https://www.studyify.in/puzzles
+The model 'claude-3-5-sonnet-20241022' is deprecated and will reach end-of-life on October 22, 2025
+Please migrate to a newer model. Visit https://docs.anthropic.com/en/docs/resources/model-deprecations for more information.
+   ✅ AI Design Score: 82/100
+   📝 A clean and focused chess learning interface with good functional hierarchy and clear interactive elements. The design effectively balances simplicity with functionality, though there are opportunities to enhance accessibility and user feedback mechanisms.
+   📊 Insights: 4 | Strengths: 5 | Improvements: 6
+   🔍 Top Issue: [layout] Clean Navigation Structure
+🤖 [5/7] Critiquing: https://www.studyify.in/play
+The model 'claude-3-5-sonnet-20241022' is deprecated and will reach end-of-life on October 22, 2025
+Please migrate to a newer model. Visit https://docs.anthropic.com/en/docs/resources/model-deprecations for more information.
+   ✅ AI Design Score: 85/100
+   📝 A clean, well-organized chess learning platform with a clear difficulty progression system. The interface effectively combines visual hierarchy and user-friendly navigation while maintaining consistent branding throughout.
+   📊 Insights: 5 | Strengths: 5 | Improvements: 5
+   🔍 Top Issue: [layout] Grid Structure
+🤖 [6/7] Critiquing: https://www.studyify.in/multiplayer
+The model 'claude-3-5-sonnet-20241022' is deprecated and will reach end-of-life on October 22, 2025
+Please migrate to a newer model. Visit https://docs.anthropic.com/en/docs/resources/model-deprecations for more information.
+   ✅ AI Design Score: 85/100
+   📝 A clean, modern multiplayer chess interface with well-organized time control options. The design effectively balances functionality with simplicity, using a dark theme that's appropriate for extended gaming sessions. The layout demonstrates good hierarchy and clear categorization of game modes.
+   📊 Insights: 4 | Strengths: 5 | Improvements: 5
+   🔍 Top Issue: [layout] Grid Layout Structure
+🤖 [7/7] Critiquing: https://www.studyify.in/leaderboard
+The model 'claude-3-5-sonnet-20241022' is deprecated and will reach end-of-life on October 22, 2025
+Please migrate to a newer model. Visit https://docs.anthropic.com/en/docs/resources/model-deprecations for more information.
+   ✅ AI Design Score: 45/100
+   📝 This leaderboard page appears to be in a very early development stage with minimal content and functionality. While the navigation sidebar provides clear structure, the main content area lacks proper implementation and user feedback. The design requires significant development to meet basic UX/UI and accessibility standards.
+   📊 Insights: 4 | Strengths: 3 | Improvements: 7
+   🔍 Top Issue: [layout] Empty Content Area
+
+✅ AI CRITIQUE COMPLETE (81.58s)
 
 
 
@@ -104,11 +155,11 @@ Scanning 7 pages for WCAG 2.1 AA compliance...
 
 📊 OVERALL STATISTICS
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-⏱️  Total Scan Time: 41.69s
+⏱️  Total Scan Time: 123.17s
 🌐 Pages Crawled: 7
 📸 Screenshots Captured: 7/7
 ♿ Accessibility Scans: 7/7
-🤖 AI Critiques: 0/7
+🤖 AI Critiques: 7/7
 ❌ Errors Encountered: 0
 
 📄 Detailed report saved: /Users/priyasingh/driftwatch-app/test-report.json
