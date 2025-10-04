@@ -13,6 +13,8 @@ import {
   ArrowRight,
   FileCode,
   Zap,
+  Key,
+  XCircle,
 } from 'lucide-react';
 
 import {
@@ -50,21 +52,23 @@ interface FixItForMeDialogProps {
     severity: string;
     description: string;
   }>;
-  isPremium?: boolean;
+  hasApiKey?: boolean; // Changed from isPremium to hasApiKey
 }
 
-export function FixItForMeDialog({ open, onOpenChange, issues, isPremium = false }: FixItForMeDialogProps) {
+export function FixItForMeDialog({ open, onOpenChange, issues, hasApiKey = false }: FixItForMeDialogProps) {
   const [isGenerating, setIsGenerating] = useState(false);
   const [generationProgress, setGenerationProgress] = useState(0);
   const [fixes, setFixes] = useState<Fix[]>([]);
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState('all');
   const [error, setError] = useState<string | null>(null);
+  const [requiresApiKey, setRequiresApiKey] = useState(false);
 
   // Real AI fix generation
   const generateFixes = async () => {
-    if (!isPremium) {
-      return; // Show paywall instead
+    if (!hasApiKey) {
+      setRequiresApiKey(true);
+      return; // Show API key requirement message
     }
 
     setIsGenerating(true);
@@ -135,17 +139,17 @@ export function FixItForMeDialog({ open, onOpenChange, issues, isPremium = false
           </DialogDescription>
         </DialogHeader>
 
-        {!isPremium ? (
-          // Paywall UI
+        {!hasApiKey || requiresApiKey ? (
+          // API Key Required UI
           <div className="space-y-6 py-8">
             <div className="text-center space-y-4">
               <div className="h-20 w-20 rounded-full bg-gradient-to-r from-purple-500 to-blue-500 flex items-center justify-center mx-auto">
-                <Crown className="h-10 w-10 text-white" />
+                <Key className="h-10 w-10 text-white" />
               </div>
-              <h3 className="text-2xl font-bold">Unlock AI-Powered Fixes</h3>
+              <h3 className="text-2xl font-bold">API Key Required</h3>
               <p className="text-muted-foreground max-w-xl mx-auto">
-                Get instant AI-generated code snippets that fix all your accessibility,
-                design, and performance issues automatically.
+                Add your Anthropic API key to unlock AI-powered code fixes for all your
+                accessibility, design, and performance issues.
               </p>
             </div>
 
@@ -208,44 +212,60 @@ export function FixItForMeDialog({ open, onOpenChange, issues, isPremium = false
               </Card>
             </div>
 
-            {/* Pricing */}
+            {/* API Key Setup Instructions */}
             <div className="max-w-md mx-auto">
               <Card className="border-primary bg-gradient-to-r from-purple-50 to-blue-50 dark:from-purple-950/20 dark:to-blue-950/20">
                 <CardHeader className="text-center">
-                  <CardTitle className="text-2xl">DriftWatch Pro</CardTitle>
-                  <CardDescription>
-                    <span className="text-3xl font-bold text-foreground">$29</span>
-                    <span className="text-muted-foreground">/month</span>
+                  <CardTitle className="text-2xl">Get Started in 2 Minutes</CardTitle>
+                  <CardDescription className="text-foreground">
+                    Free with your own API key
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  <ul className="space-y-2 text-sm">
-                    <li className="flex items-center gap-2">
-                      <Check className="h-4 w-4 text-green-600" />
-                      Unlimited AI code fixes
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <Check className="h-4 w-4 text-green-600" />
-                      Priority support
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <Check className="h-4 w-4 text-green-600" />
-                      Advanced analytics
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <Check className="h-4 w-4 text-green-600" />
-                      Scheduled monitoring
-                    </li>
-                  </ul>
+                  <div className="bg-white dark:bg-gray-900 p-4 rounded-lg space-y-3">
+                    <h4 className="font-semibold text-sm">Setup Steps:</h4>
+                    <ol className="space-y-2 text-sm text-muted-foreground">
+                      <li className="flex gap-2">
+                        <span className="font-bold text-primary">1.</span>
+                        <span>Get your free API key from Anthropic Console</span>
+                      </li>
+                      <li className="flex gap-2">
+                        <span className="font-bold text-primary">2.</span>
+                        <span>Go to Settings → API Keys</span>
+                      </li>
+                      <li className="flex gap-2">
+                        <span className="font-bold text-primary">3.</span>
+                        <span>Paste your key and save (encrypted securely)</span>
+                      </li>
+                      <li className="flex gap-2">
+                        <span className="font-bold text-primary">4.</span>
+                        <span>Start generating AI fixes for free!</span>
+                      </li>
+                    </ol>
+                  </div>
 
-                  <Button size="lg" className="w-full gap-2">
-                    <Crown className="h-5 w-5" />
-                    Upgrade to Pro
+                  <Button
+                    size="lg"
+                    className="w-full gap-2"
+                    onClick={() => window.open('https://console.anthropic.com/settings/keys', '_blank')}
+                  >
+                    <Key className="h-5 w-5" />
+                    Get Free API Key
+                    <ArrowRight className="h-4 w-4" />
+                  </Button>
+
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    className="w-full gap-2"
+                    onClick={() => window.location.href = '/settings'}
+                  >
+                    Go to Settings
                     <ArrowRight className="h-4 w-4" />
                   </Button>
 
                   <p className="text-xs text-center text-muted-foreground">
-                    7-day money-back guarantee • Cancel anytime
+                    Your API key is encrypted and stored securely • Only you can use it
                   </p>
                 </CardContent>
               </Card>

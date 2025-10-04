@@ -101,7 +101,23 @@ export default function ResultsPage() {
   const [expandedIssues, setExpandedIssues] = useState<Set<string>>(new Set());
   const [selectedScreenshot, setSelectedScreenshot] = useState<number | null>(null);
   const [fixDialogOpen, setFixDialogOpen] = useState(false);
-  const [isPremium] = useState(false); // TODO: Get from user subscription status
+  const [hasApiKey, setHasApiKey] = useState(false);
+
+  // Check if user has API key
+  useEffect(() => {
+    const checkApiKey = async () => {
+      try {
+        const res = await fetch('/api/settings/api-keys');
+        if (res.ok) {
+          const data = await res.json();
+          setHasApiKey(!!data.anthropicKey);
+        }
+      } catch (error) {
+        console.error('Error checking API key:', error);
+      }
+    };
+    checkApiKey();
+  }, []);
 
   useEffect(() => {
     fetchResults();
@@ -367,7 +383,7 @@ export default function ResultsPage() {
             }))
           ) || []),
         ]}
-        isPremium={isPremium}
+        hasApiKey={hasApiKey}
       />
 
       {/* Detailed Results Tabs */}
