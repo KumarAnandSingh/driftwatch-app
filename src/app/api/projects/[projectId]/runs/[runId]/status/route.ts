@@ -35,6 +35,15 @@ export async function GET(
       score: run.score,
       startedAt: run.startedAt,
       finishedAt: run.finishedAt,
+      // Include detailed results for the results page
+      crawlResult: run.crawlResult,
+      screenshotResults: run.screenshotResults,
+      a11yResults: run.a11yResults,
+      perfResults: run.perfResults,
+      seoResults: run.seoResults,
+      aiCritiqueResults: run.aiCritiqueResults,
+      visualDiffResults: run.visualDiffResults,
+      summaryJson: run.summaryJson,
     });
   } catch (error) {
     console.error('Error fetching run status:', error);
