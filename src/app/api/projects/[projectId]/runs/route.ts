@@ -87,6 +87,7 @@ export async function POST(
         runId: run.id,
         projectId: project.id,
         url: project.url,
+        userEmail: session.user.email, // Pass user email for API key lookup
         config: run.configJson,
       },
       {

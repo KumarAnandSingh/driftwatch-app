@@ -16,6 +16,7 @@ interface ScanJobData {
   runId: string;
   projectId: string;
   url: string;
+  userEmail?: string; // User email for API key lookup
   config: {
     maxPages: number;
     maxDepth: number;
@@ -75,15 +76,34 @@ class ScanWorker {
   }
 
   private async processScan(job: Job<ScanJobData>): Promise<void> {
-    const { runId, projectId, url, config } = job.data;
+    const { runId, projectId, url, userEmail, config } = job.data;
 
     console.log(`🚀 Starting scan for ${url} (Run: ${runId})`);
+
+    // Get user's Anthropic API key if available
+    let userAnthropicKey: string | null = null;
+    if (userEmail) {
+      const user = await prisma.user.findUnique({
+        where: { email: userEmail },
+        select: { anthropicApiKey: true },
+      });
+
+      if (user?.anthropicApiKey) {
+        try {
+          // Import the decryption function
+          const { getUserAnthropicKey } = await import('../app/api/settings/api-keys/route');
+          userAnthropicKey = await getUserAnthropicKey(userEmail);
+        } catch (error) {
+          console.error('Error fetching user API key:', error);
+        }
+      }
+    }
 
     // Initialize services
     const crawler = new WebCrawler();
     const screenshotService = new ScreenshotService();
     const accessibilityScanner = new AccessibilityScanner();
-    const aiCritiqueService = new AICritiqueService();
+    const aiCritiqueService = new AICritiqueService(userAnthropicKey || undefined);
 
     try {
       // Mark as running

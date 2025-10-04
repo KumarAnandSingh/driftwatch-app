@@ -14,6 +14,10 @@ model User {
   emailVerified DateTime?
   image         String?
   createdAt     DateTime    @default(now())
+
+  // User-level API keys for AI services (encrypted)
+  anthropicApiKey String?     // Encrypted Anthropic API key for AI Insights
+
   orgMembers    OrgMember[]
   accounts      Account[]
   sessions      Session[]
