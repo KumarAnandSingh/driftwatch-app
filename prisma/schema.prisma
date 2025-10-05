@@ -18,6 +18,12 @@ model User {
   // User-level API keys for AI services (encrypted)
   anthropicApiKey String?     // Encrypted Anthropic API key for AI Insights
 
+  // Onboarding tracking
+  onboardingCompleted Boolean   @default(false)
+  onboardingStep      Int?      // 1=welcome, 2=role, 3=project, 4=success
+  onboardingSkippedAt DateTime?
+  role                String?   // Developer, Designer, Product Manager, QA Engineer
+
   orgMembers    OrgMember[]
   accounts      Account[]
   sessions      Session[]
