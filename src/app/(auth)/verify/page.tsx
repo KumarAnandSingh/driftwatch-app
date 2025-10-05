@@ -3,6 +3,7 @@ import { Suspense, useState, useEffect, useRef, FormEvent } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { Button } from '@/components/Button';
 import Link from 'next/link';
+import confetti from 'canvas-confetti';
 
 function VerifyContent() {
   const searchParams = useSearchParams();
@@ -10,6 +11,7 @@ function VerifyContent() {
   const [code, setCode] = useState(['', '', '', '', '', '']);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState(false);
   const [resendCooldown, setResendCooldown] = useState(0);
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
@@ -97,7 +99,39 @@ function VerifyContent() {
       });
 
       if (response.ok) {
-        router.push(callbackUrl);
+        // Success! Show confetti animation
+        setSuccess(true);
+
+        // Trigger confetti
+        confetti({
+          particleCount: 100,
+          spread: 70,
+          origin: { y: 0.6 },
+          colors: ['#4F46E5', '#7C3AED', '#EC4899'],
+        });
+
+        // Additional confetti burst
+        setTimeout(() => {
+          confetti({
+            particleCount: 50,
+            angle: 60,
+            spread: 55,
+            origin: { x: 0 },
+            colors: ['#4F46E5', '#7C3AED', '#EC4899'],
+          });
+          confetti({
+            particleCount: 50,
+            angle: 120,
+            spread: 55,
+            origin: { x: 1 },
+            colors: ['#4F46E5', '#7C3AED', '#EC4899'],
+          });
+        }, 250);
+
+        // Auto-redirect after 2 seconds
+        setTimeout(() => {
+          router.push(callbackUrl);
+        }, 2000);
       } else {
         setError('Invalid or expired code. Please try again.');
         setCode(['', '', '', '', '', '']);
@@ -170,8 +204,23 @@ function VerifyContent() {
             We sent a 6-digit code to <span className="font-medium text-gray-900">{email}</span>
           </p>
 
+          {/* Success Message */}
+          {success && (
+            <div className="mb-6 p-4 bg-green-50 border border-green-200 text-green-700 rounded-lg">
+              <div className="flex items-center gap-2">
+                <svg className="w-5 h-5 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                </svg>
+                <div>
+                  <p className="font-semibold">Email verified successfully!</p>
+                  <p className="text-sm">Redirecting you to dashboard...</p>
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* Error Message */}
-          {error && (
+          {error && !success && (
             <div className="mb-6 p-4 bg-red-50 border border-red-200 text-red-700 rounded-lg text-sm">
               {error}
             </div>
