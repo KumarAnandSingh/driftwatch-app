@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import { auth } from '@/auth';
+import { getToken } from 'next-auth/jwt';
 import { prisma } from '@/lib/prisma';
 
 export async function middleware(request: NextRequest) {
@@ -19,10 +19,13 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  // Check authentication
-  const session = await auth();
+  // Check authentication using edge-compatible method
+  const token = await getToken({
+    req: request,
+    secret: process.env.NEXTAUTH_SECRET,
+  });
 
-  if (!session?.user?.email) {
+  if (!token?.email) {
     // Redirect unauthenticated users to sign-in
     if (!pathname.startsWith('/sign-in')) {
       return NextResponse.redirect(new URL('/sign-in', request.url));
@@ -38,7 +41,7 @@ export async function middleware(request: NextRequest) {
 
   try {
     const user = await prisma.user.findUnique({
-      where: { email: session.user.email },
+      where: { email: token.email as string },
       select: {
         onboardingCompleted: true,
         emailVerified: true,
