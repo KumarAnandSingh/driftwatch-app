@@ -20,20 +20,29 @@ export default async function ProjectsPage() {
     redirect('/signin');
   }
 
+  // Get user with their organization memberships
   const user = await prisma.user.findUnique({
     where: { email: session.user.email },
     include: {
-      projects: {
+      orgMembers: {
         include: {
-          scans: {
-            orderBy: { createdAt: 'desc' },
-            take: 1,
-          },
-          _count: {
-            select: { scans: true },
+          org: {
+            include: {
+              projects: {
+                include: {
+                  runs: {
+                    orderBy: { startedAt: 'desc' },
+                    take: 1,
+                  },
+                  _count: {
+                    select: { runs: true },
+                  },
+                },
+                orderBy: { createdAt: 'desc' },
+              },
+            },
           },
         },
-        orderBy: { createdAt: 'desc' },
       },
     },
   });
@@ -42,7 +51,8 @@ export default async function ProjectsPage() {
     redirect('/signin');
   }
 
-  const projects = user.projects;
+  // Flatten projects from all organizations the user belongs to
+  const projects = user.orgMembers.flatMap((member) => member.org.projects);
 
   return (
     <div className="container max-w-7xl mx-auto p-6 space-y-8">
@@ -82,8 +92,8 @@ export default async function ProjectsPage() {
       ) : (
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {projects.map((project) => {
-            const lastScan = project.scans[0];
-            const totalScans = project._count.scans;
+            const lastRun = project.runs[0];
+            const totalRuns = project._count.runs;
 
             return (
               <Link key={project.id} href={`/projects/${project.id}`}>
@@ -96,27 +106,27 @@ export default async function ProjectsPage() {
                           {project.url}
                         </CardDescription>
                       </div>
-                      {lastScan && (
+                      {lastRun && (
                         <Badge
                           variant={
-                            lastScan.status === 'completed'
+                            lastRun.status === 'COMPLETED'
                               ? 'default'
-                              : lastScan.status === 'failed'
+                              : lastRun.status === 'FAILED'
                               ? 'destructive'
                               : 'secondary'
                           }
                           className="ml-2 shrink-0"
                         >
-                          {lastScan.status === 'completed' && (
+                          {lastRun.status === 'COMPLETED' && (
                             <CheckCircle2 className="h-3 w-3 mr-1" />
                           )}
-                          {lastScan.status === 'failed' && (
+                          {lastRun.status === 'FAILED' && (
                             <AlertCircle className="h-3 w-3 mr-1" />
                           )}
-                          {lastScan.status === 'running' && (
+                          {lastRun.status === 'RUNNING' && (
                             <Activity className="h-3 w-3 mr-1 animate-pulse" />
                           )}
-                          {lastScan.status}
+                          {lastRun.status.toLowerCase()}
                         </Badge>
                       )}
                     </div>
@@ -124,52 +134,52 @@ export default async function ProjectsPage() {
 
                   <CardContent>
                     <div className="space-y-3">
-                      {/* Scan Stats */}
+                      {/* Run Stats */}
                       <div className="flex items-center gap-4 text-sm">
                         <div className="flex items-center gap-1.5">
                           <Activity className="h-4 w-4 text-muted-foreground" />
-                          <span className="font-medium">{totalScans}</span>
+                          <span className="font-medium">{totalRuns}</span>
                           <span className="text-muted-foreground">
-                            {totalScans === 1 ? 'scan' : 'scans'}
+                            {totalRuns === 1 ? 'run' : 'runs'}
                           </span>
                         </div>
-                        {lastScan && (
+                        {lastRun && (
                           <div className="flex items-center gap-1.5">
                             <Clock className="h-4 w-4 text-muted-foreground" />
                             <span className="text-muted-foreground">
-                              {new Date(lastScan.createdAt).toLocaleDateString()}
+                              {new Date(lastRun.startedAt).toLocaleDateString()}
                             </span>
                           </div>
                         )}
                       </div>
 
-                      {/* Last Scan Results */}
-                      {lastScan?.results && (
+                      {/* Last Run Results */}
+                      {lastRun && (
                         <div className="grid grid-cols-3 gap-2 pt-3 border-t">
                           <div className="text-center">
-                            <div className="text-xs text-muted-foreground mb-1">A11y</div>
+                            <div className="text-xs text-muted-foreground mb-1">Score</div>
                             <div className="text-lg font-bold">
-                              {lastScan.results.accessibility?.score || '—'}
+                              {lastRun.score || '—'}
                             </div>
                           </div>
                           <div className="text-center">
-                            <div className="text-xs text-muted-foreground mb-1">Perf</div>
+                            <div className="text-xs text-muted-foreground mb-1">Pages</div>
                             <div className="text-lg font-bold">
-                              {lastScan.results.performance?.score || '—'}
+                              {lastRun.pagesScanned || '—'}
                             </div>
                           </div>
                           <div className="text-center">
                             <div className="text-xs text-muted-foreground mb-1">Issues</div>
                             <div className="text-lg font-bold">
-                              {lastScan.results.visual?.differences || 0}
+                              {lastRun.issuesCritical + lastRun.issuesWarning}
                             </div>
                           </div>
                         </div>
                       )}
 
-                      {!lastScan && (
+                      {!lastRun && (
                         <div className="text-sm text-muted-foreground text-center py-2">
-                          No scans yet
+                          No runs yet
                         </div>
                       )}
                     </div>
