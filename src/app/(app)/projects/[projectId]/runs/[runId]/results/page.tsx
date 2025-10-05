@@ -673,27 +673,33 @@ export default function ResultsPage() {
         {/* Screenshots Tab */}
         <TabsContent value="screenshots" className="space-y-6">
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {run.screenshotResults?.map((screenshot, idx) => (
-              <Card
-                key={idx}
-                className="cursor-pointer hover:shadow-lg transition-shadow"
-                onClick={() => setSelectedScreenshot(idx)}
-              >
-                <CardContent className="p-4">
-                  <div className="aspect-video bg-muted rounded-lg mb-2 flex items-center justify-center overflow-hidden">
-                    <img
-                      src={`/artifacts/${screenshot.path}`}
-                      alt={screenshot.url}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  <p className="text-xs text-muted-foreground truncate">{screenshot.url}</p>
-                  <p className="text-xs text-muted-foreground">
-                    {screenshot.width}x{screenshot.height}
-                  </p>
-                </CardContent>
-              </Card>
-            ))}
+            {run.screenshotResults?.map((screenshot, idx) => {
+              // Extract filename from full path (e.g., /Users/.../public/artifacts/screenshot_xxx.png -> screenshot_xxx.png)
+              const filename = screenshot.path.split('/').pop() || screenshot.path;
+              const imageSrc = `/artifacts/${filename}`;
+
+              return (
+                <Card
+                  key={idx}
+                  className="cursor-pointer hover:shadow-lg transition-shadow"
+                  onClick={() => setSelectedScreenshot(idx)}
+                >
+                  <CardContent className="p-4">
+                    <div className="aspect-video bg-muted rounded-lg mb-2 flex items-center justify-center overflow-hidden">
+                      <img
+                        src={imageSrc}
+                        alt={screenshot.url}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                    <p className="text-xs text-muted-foreground truncate">{screenshot.url}</p>
+                    <p className="text-xs text-muted-foreground">
+                      {screenshot.width}x{screenshot.height}
+                    </p>
+                  </CardContent>
+                </Card>
+              );
+            })}
           </div>
         </TabsContent>
 
@@ -756,7 +762,7 @@ export default function ResultsPage() {
               </div>
               <div className="p-4 max-h-[80vh] overflow-auto">
                 <img
-                  src={`/artifacts/${run.screenshotResults[selectedScreenshot].path}`}
+                  src={`/artifacts/${run.screenshotResults[selectedScreenshot].path.split('/').pop()}`}
                   alt={run.screenshotResults[selectedScreenshot].url}
                   className="w-full"
                 />
