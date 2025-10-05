@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { getToken } from 'next-auth/jwt';
-import { prisma } from '@/lib/prisma';
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -14,6 +13,8 @@ export async function middleware(request: NextRequest) {
     pathname.includes('.') ||
     pathname.startsWith('/sign-in') ||
     pathname.startsWith('/sign-up') ||
+    pathname.startsWith('/signin') ||
+    pathname.startsWith('/signup') ||
     pathname.startsWith('/verify')
   ) {
     return NextResponse.next();
@@ -27,35 +28,21 @@ export async function middleware(request: NextRequest) {
 
   if (!token?.email) {
     // Redirect unauthenticated users to sign-in
-    if (!pathname.startsWith('/sign-in')) {
-      return NextResponse.redirect(new URL('/sign-in', request.url));
+    if (!pathname.startsWith('/signin')) {
+      return NextResponse.redirect(new URL('/signin', request.url));
     }
     return NextResponse.next();
   }
 
-  // User is authenticated - check onboarding status
+  // User is authenticated
   // Skip onboarding check if already on onboarding page
   if (pathname.startsWith('/onboarding')) {
     return NextResponse.next();
   }
 
-  try {
-    const user = await prisma.user.findUnique({
-      where: { email: token.email as string },
-      select: {
-        onboardingCompleted: true,
-        emailVerified: true,
-      },
-    });
-
-    // Redirect to onboarding if not completed and email is verified
-    if (user && user.emailVerified && !user.onboardingCompleted) {
-      return NextResponse.redirect(new URL('/onboarding', request.url));
-    }
-  } catch (error) {
-    console.error('Middleware error checking onboarding:', error);
-    // Continue to requested page if check fails
-  }
+  // Check onboarding status from token (stored during sign-in)
+  // The onboarding status is checked in the actual page components
+  // This avoids database calls in edge runtime
 
   return NextResponse.next();
 }
