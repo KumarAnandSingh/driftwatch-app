@@ -5,6 +5,9 @@ import { WebCrawler } from '../lib/scanner/crawler';
 import { ScreenshotService } from '../lib/scanner/screenshot';
 import { AccessibilityScanner } from '../lib/scanner/accessibility';
 import { AICritiqueService } from '../lib/scanner/ai-critique';
+import { PerformanceAnalyzer } from '../lib/scanner/performance';
+import { SEOScanner } from '../lib/scanner/seo';
+import { VisualDiffService } from '../lib/scanner/visual-diff';
 
 const redis = new Redis({
   host: process.env.REDIS_HOST || 'localhost',
@@ -104,6 +107,9 @@ class ScanWorker {
     const screenshotService = new ScreenshotService();
     const accessibilityScanner = new AccessibilityScanner();
     const aiCritiqueService = new AICritiqueService(userAnthropicKey || undefined);
+    const performanceAnalyzer = new PerformanceAnalyzer();
+    const seoScanner = new SEOScanner();
+    const visualDiffService = new VisualDiffService();
 
     try {
       // Mark as running
@@ -269,6 +275,162 @@ class ScanWorker {
       }
 
       // ═══════════════════════════════════════════════════════════
+      // PHASE 5: PERFORMANCE ANALYSIS (60-70%)
+      // ═══════════════════════════════════════════════════════════
+      if (config.scanPerformance) {
+        console.log(`⚡ [${runId}] Phase 5: Performance analysis...`);
+
+        await this.updateRunProgress(runId, {
+          progress: 60,
+          currentPhase: 'performance',
+        });
+
+        await performanceAnalyzer.initialize();
+
+        const perfResults = [];
+        let totalPerfScore = 0;
+
+        for (let i = 0; i < pages.length; i++) {
+          const page = pages[i];
+          const result = await performanceAnalyzer.analyze({
+            url: page.url,
+          });
+
+          perfResults.push(result);
+          totalPerfScore += result.score;
+
+          // Update progress
+          const progress = 60 + Math.floor((i + 1) / pages.length * 10);
+          await this.updateRunProgress(runId, {
+            progress,
+            currentPhase: 'performance',
+          });
+        }
+
+        const avgPerfScore = Math.round(totalPerfScore / perfResults.length);
+
+        await prisma.run.update({
+          where: { id: runId },
+          data: {
+            perfResults: perfResults as any,
+          },
+        });
+
+        console.log(`✅ [${runId}] Performance analysis complete. Avg score: ${avgPerfScore}`);
+      }
+
+      // ═══════════════════════════════════════════════════════════
+      // PHASE 6: SEO ANALYSIS (70-80%)
+      // ═══════════════════════════════════════════════════════════
+      if (config.scanSeo) {
+        console.log(`🔍 [${runId}] Phase 6: SEO analysis...`);
+
+        await this.updateRunProgress(runId, {
+          progress: 70,
+          currentPhase: 'seo',
+        });
+
+        await seoScanner.initialize();
+
+        const seoResults = [];
+        let totalSeoScore = 0;
+
+        for (let i = 0; i < pages.length; i++) {
+          const page = pages[i];
+          const result = await seoScanner.scan({
+            url: page.url,
+          });
+
+          seoResults.push(result);
+          totalSeoScore += result.score;
+
+          // Update progress
+          const progress = 70 + Math.floor((i + 1) / pages.length * 10);
+          await this.updateRunProgress(runId, {
+            progress,
+            currentPhase: 'seo',
+          });
+        }
+
+        const avgSeoScore = Math.round(totalSeoScore / seoResults.length);
+
+        await prisma.run.update({
+          where: { id: runId },
+          data: {
+            seoResults: seoResults as any,
+          },
+        });
+
+        console.log(`✅ [${runId}] SEO analysis complete. Avg score: ${avgSeoScore}`);
+      }
+
+      // ═══════════════════════════════════════════════════════════
+      // PHASE 7: VISUAL REGRESSION (80-95%)
+      // ═══════════════════════════════════════════════════════════
+      if (config.scanVisualRegression) {
+        console.log(`📷 [${runId}] Phase 7: Visual regression testing...`);
+
+        await this.updateRunProgress(runId, {
+          progress: 80,
+          currentPhase: 'visual_regression',
+        });
+
+        await visualDiffService.initialize();
+
+        // Get previous run for comparison (if exists)
+        const previousRun = await prisma.run.findFirst({
+          where: {
+            projectId,
+            status: 'COMPLETED',
+            id: { not: runId },
+          },
+          orderBy: { createdAt: 'desc' },
+          select: { screenshotResults: true },
+        });
+
+        const visualDiffResults = [];
+
+        if (previousRun?.screenshotResults) {
+          const previousScreenshots = previousRun.screenshotResults as any[];
+
+          for (let i = 0; i < screenshots.length; i++) {
+            const currentScreenshot = screenshots[i];
+            const previousScreenshot = previousScreenshots.find(
+              (s: any) => s.url === currentScreenshot.url
+            );
+
+            if (previousScreenshot) {
+              const diffResult = await visualDiffService.compare({
+                baselinePath: previousScreenshot.path,
+                currentPath: currentScreenshot.path,
+                url: currentScreenshot.url,
+              });
+
+              visualDiffResults.push(diffResult);
+            }
+
+            // Update progress
+            const progress = 80 + Math.floor((i + 1) / screenshots.length * 15);
+            await this.updateRunProgress(runId, {
+              progress,
+              currentPhase: 'visual_regression',
+            });
+          }
+
+          await prisma.run.update({
+            where: { id: runId },
+            data: {
+              visualDiffResults: visualDiffResults as any,
+            },
+          });
+
+          console.log(`✅ [${runId}] Visual regression complete. ${visualDiffResults.length} comparisons`);
+        } else {
+          console.log(`ℹ️  [${runId}] No baseline run found. Skipping visual regression.`);
+        }
+      }
+
+      // ═══════════════════════════════════════════════════════════
       // FINALIZE (95-100%)
       // ═══════════════════════════════════════════════════════════
       await this.updateRunProgress(runId, {
@@ -287,15 +449,29 @@ class ScanWorker {
       if (run?.a11yResults && Array.isArray(run.a11yResults)) {
         const a11yResults = run.a11yResults as any[];
         const avgA11y = a11yResults.reduce((sum, r) => sum + (r.score || 0), 0) / a11yResults.length;
-        overallScore += avgA11y * 0.4; // 40% weight
-        weights += 0.4;
+        overallScore += avgA11y * 0.25; // 25% weight
+        weights += 0.25;
       }
 
       if (run?.aiCritiqueResults && Array.isArray(run.aiCritiqueResults)) {
         const aiResults = run.aiCritiqueResults as any[];
         const avgAi = aiResults.reduce((sum, r) => sum + (r.score || 0), 0) / aiResults.length;
-        overallScore += avgAi * 0.4; // 40% weight
-        weights += 0.4;
+        overallScore += avgAi * 0.25; // 25% weight
+        weights += 0.25;
+      }
+
+      if (run?.perfResults && Array.isArray(run.perfResults)) {
+        const perfResults = run.perfResults as any[];
+        const avgPerf = perfResults.reduce((sum, r) => sum + (r.score || 0), 0) / perfResults.length;
+        overallScore += avgPerf * 0.25; // 25% weight
+        weights += 0.25;
+      }
+
+      if (run?.seoResults && Array.isArray(run.seoResults)) {
+        const seoResults = run.seoResults as any[];
+        const avgSeo = seoResults.reduce((sum, r) => sum + (r.score || 0), 0) / seoResults.length;
+        overallScore += avgSeo * 0.25; // 25% weight
+        weights += 0.25;
       }
 
       const finalScore = weights > 0 ? Math.round(overallScore / weights) : 75;
@@ -323,6 +499,9 @@ class ScanWorker {
       await crawler.close();
       await screenshotService.close();
       if (config.scanAccessibility) await accessibilityScanner.close();
+      if (config.scanPerformance) await performanceAnalyzer.close();
+      if (config.scanSeo) await seoScanner.close();
+      if (config.scanVisualRegression) await visualDiffService.close();
 
     } catch (error) {
       console.error(`❌ [${runId}] Scan failed:`, error);
