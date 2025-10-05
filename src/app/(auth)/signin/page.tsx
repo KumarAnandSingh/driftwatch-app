@@ -96,6 +96,16 @@ export default function SignIn() {
               >
                 {isLoading ? 'Sending code...' : 'Continue with Email'}
               </Button>
+
+              {/* Forgot Password Link */}
+              <div className="text-center">
+                <Link
+                  href="/forgot-password"
+                  className="text-sm text-indigo-600 hover:text-indigo-700 font-medium"
+                >
+                  Trouble signing in?
+                </Link>
+              </div>
             </form>
 
             {/* Divider */}
