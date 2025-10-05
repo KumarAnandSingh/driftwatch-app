@@ -11,15 +11,35 @@
 
 ## ✨ Features
 
-- 🔄 **Flow Testing** - Automated user journey testing
-- ♿ **Accessibility Scanning** - WCAG compliance checking
-- ⚡ **Performance Monitoring** - Core Web Vitals tracking
-- 👁️ **Visual Regression** - Screenshot comparison
-- 🤖 **AI Design Critique** - Intelligent design feedback
-- ✨ **AI Fix Engine** - Automated code fix generation with multi-stage algorithm
-- 🔐 **Secure Authentication** - Email OTP & Google OAuth
-- 📊 **Beautiful Dashboard** - Real-time monitoring
-- 🎨 **Modern UI** - Animated Figma design implementation
+### 🔍 Comprehensive Scanning Engine
+- ♿ **Accessibility Scanning** - WCAG 2.1 AA compliance checking with axe-core
+- ⚡ **Performance Analysis** - Lighthouse integration for Core Web Vitals (FCP, LCP, TTI, CLS)
+- 🔎 **SEO Analysis** - Meta tags, Open Graph, Twitter Cards, H1 validation, image alts
+- 👁️ **Visual Regression** - Pixel-perfect screenshot comparison with diff highlighting
+- 🤖 **AI Design Critique** - Intelligent UX/UI feedback powered by Claude AI
+- 🔄 **Multi-Phase Scanning** - 7 scanning phases with real-time progress tracking
+
+### 🔐 Authentication & Security
+- 📧 **Email Verification** - Magic link with 6-digit OTP codes
+- 🎉 **Enhanced UX** - Confetti animations on successful verification
+- ⏱️ **Resend Cooldown** - 60-second timer to prevent spam
+- 🔑 **Account Recovery** - Forgot password / trouble signing in flow
+- 🔒 **Google OAuth** - One-click social authentication
+- 🔐 **API Key Management** - Encrypted storage for user API keys (Anthropic)
+
+### 📊 Dashboard & Monitoring
+- 📈 **Real-time Progress** - Live scan progress with phase indicators
+- 🎯 **Weighted Scoring** - Balanced 25% weights across all scan categories
+- 📸 **Screenshot Gallery** - Full-page captures with responsive previews
+- 📋 **Detailed Reports** - Comprehensive issue breakdown by severity
+- 🔔 **Scan History** - Track changes over time with visual diffs
+
+### 🛠️ Developer Experience
+- ⚙️ **Background Jobs** - BullMQ worker for async scan processing
+- 🗄️ **Prisma ORM** - Type-safe database operations
+- 🎨 **Modern UI** - Tailwind CSS with shadcn/ui components
+- 📱 **Responsive Design** - Mobile-first approach
+- 🔥 **Hot Reload** - Fast development with tsx watch mode
 
 ## 🚀 Quick Start
 
@@ -227,7 +247,8 @@ npm run test:e2e     # Run E2E tests
 1. **Sign Up**
    - User enters email
    - Receives OTP code via email
-   - Verifies OTP to create account
+   - Verifies OTP with confetti animation 🎉
+   - Auto-redirects to dashboard (2s)
    - Alternative: Sign up with Google
 
 2. **Sign In**
@@ -236,10 +257,94 @@ npm run test:e2e     # Run E2E tests
    - Verifies OTP to access account
    - Alternative: Sign in with Google
 
-3. **Session Management**
+3. **Account Recovery**
+   - Click "Trouble signing in?" on login page
+   - Enter email address
+   - Receive magic link via email
+   - Click link to sign in
+
+4. **Session Management**
    - JWT-based sessions
    - Automatic session refresh
    - Secure cookie storage
+
+## 🔍 Scan Phases
+
+DriftWatch performs comprehensive multi-phase scanning with real-time progress tracking:
+
+### Phase 1: Web Crawling (0-20%)
+- Discovers pages from seed URL
+- Respects `maxDepth` and `maxPages` limits
+- Extracts internal links
+- Builds sitemap for scanning
+
+### Phase 2: Screenshot Capture (20-40%)
+- Full-page screenshots for each URL
+- High-quality 90% compression
+- Mobile and desktop viewports
+- Stored for visual regression
+
+### Phase 3: Accessibility Scanning (40-60%)
+- WCAG 2.1 AA compliance checks
+- Powered by axe-core engine
+- Categorizes issues by severity:
+  - **Critical**: Major barriers
+  - **Serious/Moderate**: Important issues
+  - **Minor**: Best practice violations
+- Reports violations with detailed explanations
+
+### Phase 4: AI Design Critique (60%)
+- Analyzes screenshots with Claude AI
+- Evaluates UX/UI design quality
+- Checks:
+  - Visual hierarchy
+  - Color contrast
+  - Typography
+  - Layout consistency
+  - Brand alignment
+- Provides actionable feedback
+
+### Phase 5: Performance Analysis (60-70%)
+- Lighthouse integration
+- Metrics collected:
+  - **FCP**: First Contentful Paint
+  - **LCP**: Largest Contentful Paint
+  - **TTI**: Time to Interactive
+  - **TBT**: Total Blocking Time
+  - **CLS**: Cumulative Layout Shift
+- Performance score (0-100)
+
+### Phase 6: SEO Analysis (70-80%)
+- Comprehensive SEO checks:
+  - Title tags (30-60 chars optimal)
+  - Meta descriptions (120-160 chars optimal)
+  - H1 tags (exactly one recommended)
+  - Image alt attributes
+  - Canonical URLs
+  - Open Graph tags (Facebook/social)
+  - Twitter Card tags
+  - Robots meta tags
+  - Viewport meta tags
+  - Internal/external link analysis
+- SEO score (0-100)
+
+### Phase 7: Visual Regression (80-95%)
+- Compares with previous scan (if exists)
+- Pixel-perfect diff detection
+- Highlights visual changes
+- Generates diff images
+- Percentage difference calculation
+- Skips if no baseline found
+
+### Phase 8: Finalize (95-100%)
+- Calculates weighted final score:
+  - Accessibility: 25%
+  - AI Critique: 25%
+  - Performance: 25%
+  - SEO: 25%
+- Saves results to database
+- Cleans up temporary files
+- Marks scan as complete
 
 ## 📊 Database Schema
 
@@ -452,13 +557,16 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - [x] BullMQ job queue
 - [x] Figma design implementation
 
-### Phase 2: Core Features 🚧
-- [ ] Web crawler implementation
-- [ ] Screenshot capture service
-- [ ] Visual diff algorithm
-- [ ] Accessibility scanner integration
-- [ ] Performance metrics collection
-- [ ] AI critique service
+### Phase 2: Core Features ✅
+- [x] Web crawler implementation
+- [x] Screenshot capture service
+- [x] Visual diff algorithm
+- [x] Accessibility scanner integration
+- [x] Performance metrics collection (Lighthouse)
+- [x] SEO analysis scanner
+- [x] AI critique service
+- [x] Email verification with confetti
+- [x] Account recovery flow
 
 ### Phase 3: Dashboard 📋
 - [ ] Project management
