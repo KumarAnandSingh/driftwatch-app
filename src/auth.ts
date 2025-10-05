@@ -15,6 +15,18 @@ declare module "next-auth" {
 export const { handlers, signIn, signOut, auth } = NextAuth({
   adapter: PrismaAdapter(prisma),
   session: { strategy: "jwt" },
+  callbacks: {
+    async signIn({ user, account }) {
+      // Auto-verify email for OAuth providers (Google, etc.)
+      if (account?.provider === 'google' && user.email) {
+        await prisma.user.update({
+          where: { email: user.email },
+          data: { emailVerified: new Date() },
+        });
+      }
+      return true;
+    },
+  },
   providers: [
     Google,
     EmailProvider({
